@@ -1,15 +1,10 @@
 package awele.bot.competitor.aweleBOT;
 
-import awele.bot.Bot;
 import awele.bot.DemoBot;
-import awele.bot.demo.first.FirstBot;
-import awele.bot.demo.minmax.MinMaxBot;
-import awele.bot.random.RandomBot;
 import awele.core.Awele;
 import awele.core.Board;
 import awele.core.InvalidBotException;
 
-import javax.print.attribute.standard.RequestingUserName;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -52,66 +47,67 @@ public class MCTS extends DemoBot {
         ArrayList<Node> childNodes = new ArrayList<>();
         Node root = new Node(null, childNodes);
         nodes.add(root);
-        root = expansion(root);
-        root = root.parentNode;
+        /*root = */expansion(root, new boolean[]{true, true, true, true, true, true});
+        //root = root.parentNode;
         turn = 0;
         isFirstToPlay = false;
     }
 
     @Override
     public void finish() {
-        System.out.println("Nombre de décisions MCTS : " + nbDecisions);
-        nbDecisions = 0;
+
         nodes.clear();
 
     }
 
     public void printFirstBranch(Node node){
-        System.out.println("Trou n°" + (node.hole+1) + ": " + node.getSimulationWins()+"/"+node.getSimulationCount());
+        System.out.println("Trou n°" + (node.hole) + ": " + node.getSimulationWins()+"/"+node.getSimulationCount());
         if(!node.isLeafNode())
             printFirstBranch(node.childNodes.get(0));
     }
     public void printBestBranch(Node node){
-        System.out.println("Trou n°" + (node.hole+1) + ": " + node.getSimulationWins()+"/"+node.getSimulationCount());
+        System.out.println(node+" Trou n°" + (node.hole) + ": " + node.getSimulationWins()+"/"+node.getSimulationCount()+": "+node.childNodes);
         if(!node.isLeafNode())
-            printFirstBranch(node.getBestFollowingNode());
+            printBestBranch(node.getBestFollowingNode());
     }
-    public void backpropagation(Node currentNode, double value){
-        Node node = currentNode;
-        while(node.getParentNode() != null){
-            node.increaseSimulationCount();
-
-            node.setSimulationWins(node.simulationWins+(int)value);
-            //System.out.println("VALUE :" + node.simulationWins);
-            node = node.getParentNode();
+    public void backpropagation(Node currentNode, double value, Node baseNode){
+        currentNode.increaseSimulationCount();
+        currentNode.setSimulationWins(currentNode.simulationWins+(int)value);
+        if(currentNode != baseNode){
+            backpropagation(currentNode.parentNode,value,baseNode);
         }
+
     }
     public Node selection(Node currentNode){
         if(currentNode.isLeafNode()) return currentNode;
         return selection(currentNode.getBestFollowingNode());
     }
 
-    public Node expansion(Node currentNode){
+    public Node expansion(Node currentNode, boolean[] validMoves){
         ArrayList<Node> childNodes = new ArrayList<>();
         for(int i = 0; i < 6; i++){
-            Node child = new Node(currentNode,null);
-            child.hole = i;
-            childNodes.add(child);
-            nodes.add(child);
+            if(validMoves[i]){
+                Node child = new Node(currentNode,null);
+                child.simulationWins = 0;
+                child.simulationCount = 0;
+                child.hole = i;
+                childNodes.add(child);
+                nodes.add(child);
+            }
         }
         currentNode.childNodes = childNodes;
         //System.out.println(currentNode + " : CREATION DE FILS/ " + currentNode.childNodes);
-        return currentNode.childNodes.get(5);
+        return currentNode.childNodes.get(0);
     }
     //Simuler une partie en prenant des actions aléatoires jusqu'à un noeud terminal
-    public double simulation(Board board){
-        int value = playGame(board);
+    public double simulation(Board board, Node node){
+        int value = playGame(board, node);
         return value;
     }
 
     //Jouer une partie contre un bot random
     //Il faut jouer manuellement les premiers coups donnés par l'arbre
-    public int playGame(Board board){
+    public int playGame(Board board, Node node){
         try{
             ArrayList<Integer> f = (ArrayList<Integer>) Arrays.stream(board.getLog(board.getCurrentPlayer())).boxed().collect(Collectors.toList());
             ArrayList<Integer> f2 = (ArrayList<Integer>) Arrays.stream(board.getLog(Board.otherPlayer(board.getCurrentPlayer()))).boxed().collect(Collectors.toList());
@@ -124,13 +120,13 @@ public class MCTS extends DemoBot {
                 if(isFirstToPlay) {
                     a = new Awele(p4, p2);
                     a.play();
-                    if(a.getWinner()==-1) return 0;
-                    return a.getWinner() == 0 ?  1: 0;
+                    if(a.getWinner()==-1) return 1;
+                    return a.getWinner() == 0 ?  2: 0;
                 }else {
                     a = new Awele(p2, p4);
                     a.play();
-                    if(a.getWinner()==-1) return 0;
-                    return a.getWinner() == 0 ?  0: 1;
+                    if(a.getWinner()==-1) return 1;
+                    return a.getWinner() == 0 ?  0: 2;
                 }
             /*}
             else{
@@ -175,60 +171,41 @@ public class MCTS extends DemoBot {
         Collections.reverse(result);
         return result;
     }
+    public void printDecisionsUntilCurrentNode(Node node){
+        int[] moves = new int[15];
+        int i = 0;
+        while(node.parentNode != null && i < 15){
+            moves[i]= node.hole;
+            node = node.parentNode;
+            i++;
+        }
+        System.out.println(Arrays.toString(moves));
+    }
     public double[] getMCTSDecision(Board board){
-        //Récupérer les coups valides
-        boolean[] coupsValides = board.validMoves(board.getCurrentPlayer());
         //Récupérer le noeud actuel de l'arbre
         int[] coupsJoués = board.getLog(board.getCurrentPlayer());
         if(nodes.size() == 0) initialize();
-        Board copyBoard = (Board) board.clone();
         Node currentNode = nodes.get(0);
-        String holesPlayed = "";
         for(int y = 0; y < coupsJoués.length; y++) {
             /* Il faut trouver la valeur qui correspond au trou */
-            if(currentNode.childNodes !=null) {
-                //System.out.println("enfant:" + currentNode + ": " + currentNode.childNodes);
-                holesPlayed += currentNode.childNodes.get(coupsJoués[y]);
-                currentNode = currentNode.childNodes.get(coupsJoués[y]);
-
-            }else{
-                System.out.println("pas d'enfant:" + currentNode);
-                currentNode.printNode();
-                System.out.println( currentNode.alreadyVisited() &&  currentNode.isLeafNode());
-
+            for(int x = 0; x < currentNode.childNodes.size(); x++){
+                if(currentNode.childNodes.get(x).hole == coupsJoués[y]){
+                    currentNode = currentNode.childNodes.get(x);
+                    break;
+                }
             }
         }
-        for (int i = 0; i < 2000; i++) {
-
+        for (int i = 0; i < 50; i++) {
             Node test = selection(currentNode);
-            //Node test = selection(nodes.get(0));
-            //Une fois le noeud selectionné il faut simuler
-            //System.out.println("selected:" + test);
-            if (test.alreadyVisited() && test.isLeafNode()) {
-                test = expansion(test);
+            if (test.alreadyVisited()) {
+                test = expansion(test,board.validMoves(board.getCurrentPlayer()));
             }
 
-            double value = simulation(board);
-            backpropagation(test, value);
-        }
-        Node abc = currentNode;
+            double value = simulation(board, test);
+            backpropagation(test, value, currentNode);
 
-        nbDecisions += 1;
-        boolean[] coupsPossibles = board.validMoves(board.getCurrentPlayer());
-        boolean useMCTS = false;
-        for(int i = 0; i < coupsPossibles.length; i++){
-            if(coupsPossibles[i] && (double)abc.getChildNodes().get(i).simulationWins/(double)abc.getChildNodes().get(i).simulationCount>0.9)
-                useMCTS = true;
         }
-        if(useMCTS){
-            double[] res = abc.getWinningPercentages();
-            System.out.println("MCTS: " + Arrays.toString(res));
-            return res;
-        }
-        MinMaxNode.initialize (board, 6);
-        double[] res = new MaxNode(board).getDecision ();
-        System.out.println("Minmax: " + Arrays.toString(res) + " | MCTS: " + Arrays.toString(abc.getWinningPercentages()));
-        return res;
+        return currentNode.getWinningPercentages();
 
 
     }
@@ -242,10 +219,18 @@ public class MCTS extends DemoBot {
             }
         }
         turn += 1;
-        double[] decision = getMCTSDecision((Board) board.clone());
-        return decision;
+        //double[] decision = getMCTSDecision((Board) board.clone());
+
+        //clearNodes();
+        return getMCTSDecision(board);
     }
 
+    public void clearNodes(){
+        for(Node node : nodes){
+            node.simulationCount = 0;
+            node.simulationWins = 0;
+        }
+    }
     public boolean isBoardIntact(Board board){
         int[] log0 = board.getLog(0);
         int[] log1 = board.getLog(1);
