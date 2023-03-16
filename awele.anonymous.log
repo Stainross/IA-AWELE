@@ -1,19 +1,19 @@
-Mémoire totale : 4,0 GiB
+Mémoire totale : 8,0 GiB
 Instanciation du bot "Random"
 13 classes ont été trouvées
 class awele.bot.demo.random.RandomBot
 class awele.bot.demo.last.LastBot
-class awele.bot.competitor.aweleBOT.MCTS
 class awele.bot.competitor.aweleBOT.PartiallyGuidedLastBOT
 class awele.bot.demo.knn2.Knn2Bot
 class awele.bot.competitor.aweleBOT.PartiallyGuidedMinmaxBOT
-class awele.bot.competitor.aweleBOT.MCTS2
+class awele.bot.Lucas.Awelicopter
 class awele.bot.demo.first.FirstBot
 class awele.bot.random.RandomBot
 class awele.bot.demo.minmax.MinMaxBot
 class awele.bot.competitor.aweleBOT.PartiallyRandomBOT
-class awele.bot.demo.knn1.Knn1Bot
+class awele.bot.competitor.aweleBOT.minmaxBetterBot
 class awele.bot.competitor.aweleBOT.Random
+class awele.bot.demo.knn1.Knn1Bot
 
 Bot 1/13
 Classe : awele.bot.demo.random.RandomBot
@@ -22,7 +22,7 @@ Nom du bot : Random
 Temps d'apprentissage : 00:00:00.000
 Durée d'une prise de décision : 00:00:00.000
 Usage mémoire : 0 B
-Usage mémoire maximum : 1,8 MiB
+Usage mémoire maximum : 1,9 MiB
 
 Bot 2/13
 Classe : awele.bot.demo.last.LastBot
@@ -30,23 +30,10 @@ Instanciation du bot "Last"
 Nom du bot : Last
 Temps d'apprentissage : 00:00:00.000
 Durée d'une prise de décision : 00:00:00.000
-Usage mémoire : 160 B
-Usage mémoire maximum : 308,4 KiB
+Usage mémoire : 32 B
+Usage mémoire maximum : 346,7 KiB
 
 Bot 3/13
-Classe : awele.bot.competitor.aweleBOT.MCTS
-Instanciation du bot "AweleBOT- mcts TEST"
-Instanciation du bot "PartiallyRandomBOT"
-Instanciation du bot "PartiallyRandomBOT"
-Instanciation du bot "PartiallyGuidedMinmaxBOT"
-Instanciation du bot "PartiallyGuidedMinmaxBOT"
-Nom du bot : AweleBOT- mcts TEST
-Temps d'apprentissage : 00:00:00.000
-Durée d'une prise de décision : 00:00:00.004
-Usage mémoire : 615,5 KiB
-Usage mémoire maximum : 69,1 MiB
-
-Bot 4/13
 Classe : awele.bot.competitor.aweleBOT.PartiallyGuidedLastBOT
 Instanciation du bot "PartiallyGuidedLastBOT"
 Nom du bot : PartiallyGuidedLastBOT
@@ -54,60 +41,65 @@ Temps d'apprentissage : 00:00:00.000
 Bot "awele.bot.competitor.aweleBOT.PartiallyGuidedLastBOT" disqualifié : ne peut pas être instancié
 java.lang.NullPointerException: Cannot invoke "java.util.ArrayList.size()" because "this.firstMoves" is null
 
-Bot 5/13
+Bot 4/13
 Classe : awele.bot.demo.knn2.Knn2Bot
 Instanciation du bot "k-NN2"
 Nom du bot : k-NN2
-Temps d'apprentissage : 00:00:00.000
+Temps d'apprentissage : 00:00:00.003
 Bot "awele.bot.demo.knn2.Knn2Bot" disqualifié : ne peut pas être instancié
 java.lang.ArrayIndexOutOfBoundsException: Index 10 out of bounds for length 0
 
-Bot 6/13
+Bot 5/13
 Classe : awele.bot.competitor.aweleBOT.PartiallyGuidedMinmaxBOT
 Instanciation du bot "PartiallyGuidedMinmaxBOT"
 Nom du bot : PartiallyGuidedMinmaxBOT
 Temps d'apprentissage : 00:00:00.000
-Durée d'une prise de décision : 00:00:00.054
-Usage mémoire : 1,4 KiB
-Usage mémoire maximum : 76,0 MiB
+Durée d'une prise de décision : 00:00:00.053
+Usage mémoire : 695,3 KiB
+Usage mémoire maximum : 68,8 MiB
+
+Bot 6/13
+Classe : awele.bot.Lucas.Awelicopter
+Instanciation du bot "Awelicopter"
+Nom du bot : Awelicopter
+Instanciation du bot "Random"
+Instanciation du bot "Awelicopter"
+Instanciation du bot "Awelicopter"
+Instanciation du bot "Awelicopter"
+Instanciation du bot "Awelicopter"
+Temps d'apprentissage : 00:00:15.425
+Durée d'une prise de décision : 00:00:00.190
+Usage mémoire : 21,2 KiB
+Usage mémoire maximum : 450,1 MiB
 
 Bot 7/13
-Classe : awele.bot.competitor.aweleBOT.MCTS2
-Instanciation du bot "MCTS VERSION 2"
-Nom du bot : MCTS VERSION 2
-Temps d'apprentissage : 00:00:00.000
-Durée d'une prise de décision : 00:00:00.108
-Usage mémoire : 19,1 MiB
-Usage mémoire maximum : 296,5 MiB
-
-Bot 8/13
 Classe : awele.bot.demo.first.FirstBot
 Instanciation du bot "First"
 Nom du bot : First
 Temps d'apprentissage : 00:00:00.000
 Durée d'une prise de décision : 00:00:00.000
-Usage mémoire : 800 B
-Usage mémoire maximum : 1019,9 KiB
+Usage mémoire : 592 B
+Usage mémoire maximum : 489,8 KiB
 
-Bot 9/13
+Bot 8/13
 Classe : awele.bot.random.RandomBot
 Instanciation du bot "Random"
 Nom du bot : Random
 Temps d'apprentissage : 00:00:00.000
 Durée d'une prise de décision : 00:00:00.000
-Usage mémoire : 808 B
-Usage mémoire maximum : 938,3 KiB
+Usage mémoire : 728 B
+Usage mémoire maximum : 269,1 KiB
 
-Bot 10/13
+Bot 9/13
 Classe : awele.bot.demo.minmax.MinMaxBot
 Instanciation du bot "MinMax"
 Nom du bot : MinMax
 Temps d'apprentissage : 00:00:00.000
-Durée d'une prise de décision : 00:00:00.075
-Usage mémoire : 1,5 KiB
-Usage mémoire maximum : 52,0 MiB
+Durée d'une prise de décision : 00:00:00.050
+Usage mémoire : 1,3 KiB
+Usage mémoire maximum : 10,0 MiB
 
-Bot 11/13
+Bot 10/13
 Classe : awele.bot.competitor.aweleBOT.PartiallyRandomBOT
 Instanciation du bot "PartiallyRandomBOT"
 Nom du bot : PartiallyRandomBOT
@@ -115,26 +107,35 @@ Temps d'apprentissage : 00:00:00.000
 Bot "awele.bot.competitor.aweleBOT.PartiallyRandomBOT" disqualifié : ne peut pas être instancié
 java.lang.NullPointerException: Cannot invoke "java.util.ArrayList.size()" because "this.firstMoves" is null
 
-Bot 12/13
-Classe : awele.bot.demo.knn1.Knn1Bot
-Instanciation du bot "k-NN1"
-Nom du bot : k-NN1
+Bot 11/13
+Classe : awele.bot.competitor.aweleBOT.minmaxBetterBot
+Instanciation du bot "IAWeleBot MinMax"
+Nom du bot : IAWeleBot MinMax
 Temps d'apprentissage : 00:00:00.000
-Bot "awele.bot.demo.knn1.Knn1Bot" disqualifié : ne peut pas être instancié
-java.lang.ArrayIndexOutOfBoundsException: Index 10 out of bounds for length 0
+Durée d'une prise de décision : 00:00:00.047
+Usage mémoire : 848 B
+Usage mémoire maximum : 280,0 MiB
 
-Bot 13/13
+Bot 12/13
 Classe : awele.bot.competitor.aweleBOT.Random
 Instanciation du bot "AweleBOT- random"
 Nom du bot : AweleBOT- random
 Temps d'apprentissage : 00:00:00.000
 Durée d'une prise de décision : 00:00:00.000
-Usage mémoire : 808 B
-Usage mémoire maximum : 1023,1 KiB
+Usage mémoire : 1,2 KiB
+Usage mémoire maximum : 400,0 KiB
+
+Bot 13/13
+Classe : awele.bot.demo.knn1.Knn1Bot
+Instanciation du bot "k-NN1"
+Nom du bot : k-NN1
+Temps d'apprentissage : 00:00:00.001
+Bot "awele.bot.demo.knn1.Knn1Bot" disqualifié : ne peut pas être instancié
+java.lang.ArrayIndexOutOfBoundsException: Index 10 out of bounds for length 0
 
 9 bots ont été instanciés
-Durée du chargement : 00:00:29.192
-Mémoire utilisée : 22,5 MiB
+Durée du chargement : 00:00:28.671
+Mémoire utilisée : 2,2 MiB
 
 Que le championnat commence !
 
@@ -142,81 +143,310 @@ Affrontement 1/36
 Random vs. Last
 Score : 0.0 - 3.0
 Last a gagné
-Nombre de coups joués : 137.0 par match
+Nombre de coups joués : 108.5 par match
 Durée : 00:00:00.000 par match
-Mémoire utilisée : 21,3 MiB
+Mémoire utilisée : 2,2 MiB
 
 Affrontement 2/36
-Random vs. AweleBOT- mcts TEST
-Score : 3.0 - 0.0
-Random a gagné
-Nombre de coups joués : 65.0 par match
-Durée : 00:00:00.047 par match
-Mémoire utilisée : 21,3 MiB
-
-Affrontement 3/36
 Random vs. PartiallyGuidedMinmaxBOT
 Score : 0.0 - 3.0
 PartiallyGuidedMinmaxBOT a gagné
-Nombre de coups joués : 22.5 par match
-Durée : 00:00:00.737 par match
-Mémoire utilisée : 21,3 MiB
+Nombre de coups joués : 31.5 par match
+Durée : 00:00:00.647 par match
+Mémoire utilisée : 2,2 MiB
+
+Affrontement 3/36
+Random vs. Awelicopter
+Score : 0.0 - 3.0
+Awelicopter a gagné
+Nombre de coups joués : 39.5 par match
+Durée : 00:00:06.960 par match
+Mémoire utilisée : 2,2 MiB
 
 Affrontement 4/36
-Random vs. MCTS VERSION 2
+Random vs. First
 Score : 3.0 - 0.0
 Random a gagné
-Nombre de coups joués : 143.0 par match
-Durée : 00:00:07.721 par match
-Mémoire utilisée : 9,4 MiB
+Nombre de coups joués : 119.0 par match
+Durée : 00:00:00.000 par match
+Mémoire utilisée : 2,2 MiB
 
 Affrontement 5/36
-Random vs. First
-Score : 0.0 - 3.0
-First a gagné
-Nombre de coups joués : 212.5 par match
+Random vs. Random
+Score : 3.0 - 0.0
+Random a gagné
+Nombre de coups joués : 97.5 par match
 Durée : 00:00:00.000 par match
-Mémoire utilisée : 9,4 MiB
+Mémoire utilisée : 2,2 MiB
 
 Affrontement 6/36
-Random vs. Random
-Score : 0.0 - 3.0
-Random a gagné
-Nombre de coups joués : 81.5 par match
-Durée : 00:00:00.000 par match
-Mémoire utilisée : 9,4 MiB
-
-Affrontement 7/36
 Random vs. MinMax
 Score : 0.0 - 3.0
 MinMax a gagné
-Nombre de coups joués : 15.5 par match
-Durée : 00:00:00.534 par match
-Mémoire utilisée : 9,4 MiB
+Nombre de coups joués : 30.5 par match
+Durée : 00:00:00.659 par match
+Mémoire utilisée : 2,2 MiB
+
+Affrontement 7/36
+Random vs. IAWeleBot MinMax
+Score : 0.0 - 3.0
+IAWeleBot MinMax a gagné
+Nombre de coups joués : 43.5 par match
+Durée : 00:00:00.958 par match
+Mémoire utilisée : 2,2 MiB
 
 Affrontement 8/36
 Random vs. AweleBOT- random
 Score : 3.0 - 0.0
 Random a gagné
-Nombre de coups joués : 100.0 par match
+Nombre de coups joués : 62.0 par match
 Durée : 00:00:00.000 par match
-Mémoire utilisée : 9,4 MiB
+Mémoire utilisée : 2,2 MiB
 
 Affrontement 9/36
-Last vs. AweleBOT- mcts TEST
-Score : 3.0 - 0.0
-Last a gagné
-Nombre de coups joués : 54.5 par match
-Durée : 00:00:00.039 par match
-Mémoire utilisée : 9,4 MiB
-
-Affrontement 10/36
 Last vs. PartiallyGuidedMinmaxBOT
 Score : 0.0 - 3.0
 PartiallyGuidedMinmaxBOT a gagné
-Nombre de coups joués : 38.5 par match
-Durée : 00:00:01.359 par match
-Mémoire utilisée : 9,4 MiB
+Nombre de coups joués : 54.5 par match
+Durée : 00:00:01.352 par match
+Mémoire utilisée : 2,2 MiB
+
+Affrontement 10/36
+Last vs. Awelicopter
+Score : 0.0 - 3.0
+Awelicopter a gagné
+Nombre de coups joués : 50.5 par match
+Durée : 00:00:14.844 par match
+Mémoire utilisée : 2,2 MiB
 
 Affrontement 11/36
-Last vs. MCTS VERSION 2
+Last vs. First
+Score : 3.0 - 0.0
+Last a gagné
+Nombre de coups joués : 291.5 par match
+Durée : 00:00:00.000 par match
+Mémoire utilisée : 2,2 MiB
+
+Affrontement 12/36
+Last vs. Random
+Score : 0.0 - 3.0
+Random a gagné
+Nombre de coups joués : 78.5 par match
+Durée : 00:00:00.000 par match
+Mémoire utilisée : 2,2 MiB
+
+Affrontement 13/36
+Last vs. MinMax
+Score : 0.0 - 3.0
+MinMax a gagné
+Nombre de coups joués : 47.5 par match
+Durée : 00:00:01.025 par match
+Mémoire utilisée : 2,2 MiB
+
+Affrontement 14/36
+Last vs. IAWeleBot MinMax
+Score : 0.0 - 3.0
+IAWeleBot MinMax a gagné
+Nombre de coups joués : 60.5 par match
+Durée : 00:00:01.281 par match
+Mémoire utilisée : 2,2 MiB
+
+Affrontement 15/36
+Last vs. AweleBOT- random
+Score : 3.0 - 0.0
+Last a gagné
+Nombre de coups joués : 133.5 par match
+Durée : 00:00:00.000 par match
+Mémoire utilisée : 2,2 MiB
+
+Affrontement 16/36
+PartiallyGuidedMinmaxBOT vs. Awelicopter
+Score : 0.0 - 3.0
+Awelicopter a gagné
+Nombre de coups joués : 76.5 par match
+Durée : 00:00:15.680 par match
+Mémoire utilisée : 2,2 MiB
+
+Affrontement 17/36
+PartiallyGuidedMinmaxBOT vs. First
+Score : 3.0 - 0.0
+PartiallyGuidedMinmaxBOT a gagné
+Nombre de coups joués : 56.5 par match
+Durée : 00:00:01.307 par match
+Mémoire utilisée : 2,2 MiB
+
+Affrontement 18/36
+PartiallyGuidedMinmaxBOT vs. Random
+Score : 3.0 - 0.0
+PartiallyGuidedMinmaxBOT a gagné
+Nombre de coups joués : 32.5 par match
+Durée : 00:00:00.762 par match
+Mémoire utilisée : 2,2 MiB
+
+Affrontement 19/36
+PartiallyGuidedMinmaxBOT vs. MinMax
+Score : 3.0 - 0.0
+PartiallyGuidedMinmaxBOT a gagné
+Nombre de coups joués : 66.5 par match
+Durée : 00:00:01.596 par match
+Mémoire utilisée : 2,2 MiB
+
+Affrontement 20/36
+PartiallyGuidedMinmaxBOT vs. IAWeleBot MinMax
+Score : 0.0 - 3.0
+IAWeleBot MinMax a gagné
+Nombre de coups joués : 73.5 par match
+Durée : 00:00:03.438 par match
+Mémoire utilisée : 2,2 MiB
+
+Affrontement 21/36
+PartiallyGuidedMinmaxBOT vs. AweleBOT- random
+Score : 3.0 - 0.0
+PartiallyGuidedMinmaxBOT a gagné
+Nombre de coups joués : 31.5 par match
+Durée : 00:00:00.607 par match
+Mémoire utilisée : 2,2 MiB
+
+Affrontement 22/36
+Awelicopter vs. First
+Score : 3.0 - 0.0
+Awelicopter a gagné
+Nombre de coups joués : 40.5 par match
+Durée : 00:00:03.443 par match
+Mémoire utilisée : 2,2 MiB
+
+Affrontement 23/36
+Awelicopter vs. Random
+Score : 3.0 - 0.0
+Awelicopter a gagné
+Nombre de coups joués : 45.5 par match
+Durée : 00:00:05.214 par match
+Mémoire utilisée : 2,2 MiB
+
+Affrontement 24/36
+Awelicopter vs. MinMax
+Score : 3.0 - 0.0
+Awelicopter a gagné
+Nombre de coups joués : 73.5 par match
+Durée : 00:00:14.056 par match
+Mémoire utilisée : 2,2 MiB
+
+Affrontement 25/36
+Awelicopter vs. IAWeleBot MinMax
+Score : 3.0 - 0.0
+Awelicopter a gagné
+Nombre de coups joués : 68.5 par match
+Durée : 00:00:10.484 par match
+Mémoire utilisée : 2,2 MiB
+
+Affrontement 26/36
+Awelicopter vs. AweleBOT- random
+Score : 3.0 - 0.0
+Awelicopter a gagné
+Nombre de coups joués : 56.5 par match
+Durée : 00:00:08.141 par match
+Mémoire utilisée : 2,2 MiB
+
+Affrontement 27/36
+First vs. Random
+Score : 0.0 - 3.0
+Random a gagné
+Nombre de coups joués : 100.0 par match
+Durée : 00:00:00.000 par match
+Mémoire utilisée : 2,2 MiB
+
+Affrontement 28/36
+First vs. MinMax
+Score : 0.0 - 3.0
+MinMax a gagné
+Nombre de coups joués : 37.5 par match
+Durée : 00:00:01.050 par match
+Mémoire utilisée : 2,2 MiB
+
+Affrontement 29/36
+First vs. IAWeleBot MinMax
+Score : 0.0 - 3.0
+IAWeleBot MinMax a gagné
+Nombre de coups joués : 40.5 par match
+Durée : 00:00:00.964 par match
+Mémoire utilisée : 2,2 MiB
+
+Affrontement 30/36
+First vs. AweleBOT- random
+Score : 3.0 - 0.0
+First a gagné
+Nombre de coups joués : 81.0 par match
+Durée : 00:00:00.000 par match
+Mémoire utilisée : 2,2 MiB
+
+Affrontement 31/36
+Random vs. MinMax
+Score : 0.0 - 3.0
+MinMax a gagné
+Nombre de coups joués : 42.5 par match
+Durée : 00:00:00.775 par match
+Mémoire utilisée : 2,2 MiB
+
+Affrontement 32/36
+Random vs. IAWeleBot MinMax
+Score : 0.0 - 3.0
+IAWeleBot MinMax a gagné
+Nombre de coups joués : 36.5 par match
+Durée : 00:00:00.752 par match
+Mémoire utilisée : 2,2 MiB
+
+Affrontement 33/36
+Random vs. AweleBOT- random
+Score : 0.0 - 3.0
+AweleBOT- random a gagné
+Nombre de coups joués : 106.0 par match
+Durée : 00:00:00.000 par match
+Mémoire utilisée : 2,2 MiB
+
+Affrontement 34/36
+MinMax vs. IAWeleBot MinMax
+Score : 0.0 - 3.0
+IAWeleBot MinMax a gagné
+Nombre de coups joués : 48.5 par match
+Durée : 00:00:01.573 par match
+Mémoire utilisée : 2,2 MiB
+
+Affrontement 35/36
+MinMax vs. AweleBOT- random
+Score : 3.0 - 0.0
+MinMax a gagné
+Nombre de coups joués : 45.5 par match
+Durée : 00:00:01.059 par match
+Mémoire utilisée : 2,2 MiB
+
+Affrontement 36/36
+IAWeleBot MinMax vs. AweleBOT- random
+Score : 3.0 - 0.0
+IAWeleBot MinMax a gagné
+Nombre de coups joués : 45.5 par match
+Durée : 00:00:01.057 par match
+Mémoire utilisée : 2,2 MiB
+
+Durée du championnat : 00:03:19.667
+
+Scores finaux :
+Random : 9.0
+Last : 9.0
+PartiallyGuidedMinmaxBOT : 18.0
+Awelicopter : 24.0
+First : 3.0
+Random : 6.0
+MinMax : 15.0
+IAWeleBot MinMax : 21.0
+AweleBOT- random : 3.0
+
+Rangs :
+1. Awelicopter : 24.0
+2. IAWeleBot MinMax : 21.0
+3. PartiallyGuidedMinmaxBOT : 18.0
+4. MinMax : 15.0
+5. Last : 9.0
+6. Random : 9.0
+7. Random : 6.0
+8. AweleBOT- random : 3.0
+9. First : 3.0

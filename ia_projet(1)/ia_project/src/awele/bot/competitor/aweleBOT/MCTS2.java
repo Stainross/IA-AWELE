@@ -8,7 +8,7 @@ import awele.core.InvalidBotException;
 import java.util.Arrays;
 import java.util.Random;
 import java.util.ArrayList;
-
+/*
 public class MCTS2 extends DemoBot {
 
     private static final int SIMULATION_COUNT = 50; // Number of simulations to run for each selection
@@ -45,6 +45,7 @@ public class MCTS2 extends DemoBot {
         }*/
 
         // Run MCTS simulations until time limit is reached
+/*
         while (System.currentTimeMillis() - startTime < TIME_LIMIT_MS) {
             // Selection
             Node2 selectedNode = select(rootNode);
@@ -197,4 +198,4 @@ public class MCTS2 extends DemoBot {
     public void learn() {
 
     }
-}
+}*/

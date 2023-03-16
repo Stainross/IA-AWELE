@@ -8,7 +8,7 @@ import awele.core.InvalidBotException;
  * @author Alexandre Blansché
  * Noeud d'un arbre MinMax
  */
-public abstract class MinMaxNode
+public abstract class MinMaxNodeModified
 {
     /** Numéro de joueur de l'IA */
     private static int player;
@@ -29,7 +29,7 @@ public abstract class MinMaxNode
      * @param alpha Le seuil pour la coupe alpha
      * @param beta Le seuil pour la coupe beta
      */
-    public MinMaxNode (Board board, int depth, double alpha, double beta)
+    public  MinMaxNodeModified(Board board, int depth, double alpha, double beta)
     {
         /* On crée un tableau des évaluations des coups à jouer pour chaque situation possible */
         this.decision = new double [Board.NB_HOLES];
@@ -59,16 +59,18 @@ public abstract class MinMaxNode
                     else
                     {
                         /* Si la profondeur maximale n'est pas atteinte */
-                        if (depth < MinMaxNode.maxDepth)
+                        if (depth < MinMaxNodeModified.maxDepth)
                         {
                             /* On construit le noeud suivant */
-                            awele.bot.competitor.aweleBOT.MinMaxNode child = this.getNextNode (copy, depth + 1, alpha, beta);
+                            MinMaxNodeModified child = this.getNextNode (copy, depth + 1, alpha, beta);
                             /* On récupère l'évaluation du noeud fils */
                             this.decision [i] = child.getEvaluation ();
                         }
                         /* Sinon (si la profondeur maximale est atteinte), on évalue la situation actuelle */
-                        else
-                            this.decision [i] = this.diffScore (copy);
+                        else{
+                            // LIGNE A MODIFIER
+                            this.decision [i] = this.diffScore (copy)+evaluateBoardForCurrentPlayer(copy);
+                        }
                     }
                     /* L'évaluation courante du noeud est mise à jour, selon le type de noeud (MinNode ou MaxNode) */
                     this.evaluation = this.minmax (this.decision [i], this.evaluation);
@@ -85,6 +87,56 @@ public abstract class MinMaxNode
                 }
             }
     }
+    public String BoardType(Board board){
+        if (board.getNbSeeds() >=32)
+            return "DEBUT";
+        else if (board.getNbSeeds() <= 8)
+            return "FIN";
+        else
+            return "MILIEU";
+    }
+    public double evaluateBoardForCurrentPlayer(Board board){
+
+        double score = 0;
+        if(BoardType(board) == "DEBUT") {
+            int[] opponentHoles = board.getOpponentHoles();
+            int[] playerHoles = board.getPlayerHoles();
+            for (int i = 1; i < opponentHoles.length; i++) {
+                if (opponentHoles[i - 1] > 0 && opponentHoles[i] > 0) {
+                    score += 1;
+                }
+            }
+            for (int i = 1; i < playerHoles.length; i++) {
+                if (playerHoles[i - 1] > 0 && playerHoles[i] > 0) {
+                    score -= 1;
+                }
+            }
+        } else if (BoardType(board) == "MILIEU") {/*
+            int[] opponentHoles = board.getOpponentHoles();
+            int[] playerHoles = board.getPlayerHoles();
+            for (int i = 1; i < playerHoles.length; i++) {
+                if (playerHoles[i - 1] > 0 && playerHoles[i] > 0) {
+                    score -= 1;
+                }
+            }*/
+        } /*else if (BoardType(board) == "FIN") {
+            int[] opponentHoles = board.getOpponentHoles();
+            int[] playerHoles = board.getPlayerHoles();
+            for (int i = 1; i < opponentHoles.length; i++) {
+                if (opponentHoles[i - 1] > 0 && opponentHoles[i] > 0) {
+                    score += 1;
+                }
+            }
+            for (int i = 1; i < playerHoles.length; i++) {
+                if (playerHoles[i - 1] > 0 && playerHoles[i] > 0) {
+                    score -= 1;
+                }
+            }
+        }*/
+
+
+        return score;
+    }
 
     /** Pire score pour un joueur */
     protected abstract double worst ();
@@ -94,13 +146,13 @@ public abstract class MinMaxNode
      */
     protected static void initialize (Board board, int maxDepth)
     {
-        MinMaxNode.maxDepth = maxDepth;
-        MinMaxNode.player = board.getCurrentPlayer ();
+        MinMaxNodeModified.maxDepth = maxDepth;
+        MinMaxNodeModified.player = board.getCurrentPlayer ();
     }
 
     private int diffScore (Board board)
     {
-        return board.getScore (MinMaxNode.player) - board.getScore (Board.otherPlayer (MinMaxNode.player));
+        return board.getScore (MinMaxNodeModified.player) - board.getScore (Board.otherPlayer (MinMaxNodeModified.player));
     }
 
     /**
@@ -145,7 +197,7 @@ public abstract class MinMaxNode
      * @param beta  Le seuil pour la coupe beta
      * @return Un noeud (MinNode ou MaxNode) du niveau suivant
      */
-    protected abstract MinMaxNode getNextNode (Board board, int depth, double alpha, double beta);
+    protected abstract MinMaxNodeModified getNextNode (Board board, int depth, double alpha, double beta);
 
     /**
      * L'évaluation du noeud

@@ -1,6 +1,9 @@
 package awele.bot.demo.knn1;
 
+import awele.bot.Bot;
 import awele.bot.DemoBot;
+import awele.bot.demo.minmax.MinMaxBot;
+import awele.core.Awele;
 import awele.core.Board;
 import awele.core.InvalidBotException;
 

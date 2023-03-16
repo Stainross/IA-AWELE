@@ -35,8 +35,8 @@ public class PartiallyGuidedMinmaxBOT extends DemoBot {
             firstMoves.remove(0);
             return decision;
         }*/
-        MinMaxNode.initialize (board, PartiallyGuidedMinmaxBOT.MAX_DEPTH);
-        return new MaxNode(board).getDecision ();
+        MinMaxNodeModified.initialize (board, PartiallyGuidedMinmaxBOT.MAX_DEPTH);
+        return new MaxNodeModified(board).getDecision ();
     }
 
     public void setFirstMoves(ArrayList<Integer> f){

@@ -6,13 +6,13 @@ import awele.core.Board;
  * @author Alexandre Blansché
  * Noeud Max : estimation du meilleur coup possible pour l'IA
  */
-public class MaxNode extends MinMaxNode
+public class MaxNodeModified extends MinMaxNodeModified
 {
     /**
      * Constructeur pour un noeud initial
      * @param board La situation de jeu pour laquelle il faut prendre une décision
      */
-    MaxNode (Board board)
+    MaxNodeModified(Board board)
     {
         this (board, 0, -Double.MAX_VALUE, Double.MAX_VALUE);
     }
@@ -23,7 +23,7 @@ public class MaxNode extends MinMaxNode
      * @param depth La profondeur du noeud
      * @param alphabeta Le seuil pour la coupe alpha-beta
      */
-    MaxNode (Board board, int depth, double alpha, double beta)
+    MaxNodeModified(Board board, int depth, double alpha, double beta)
     {
         super (board, depth, alpha, beta);
     }
@@ -64,9 +64,9 @@ public class MaxNode extends MinMaxNode
      * @return Un noeud MinNode du niveau suivant
      */
     @Override
-    protected MinMaxNode getNextNode (Board board, int depth, double alpha, double beta)
+    protected MinMaxNodeModified getNextNode (Board board, int depth, double alpha, double beta)
     {
-        return new MinNode(board, depth, alpha, beta);
+        return new MinNodeModified(board, depth, alpha, beta);
     }
 
     /**

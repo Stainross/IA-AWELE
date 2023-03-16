@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.stream.Collectors;
-
+/*
 public class MCTS extends DemoBot {
 
     private ArrayList<Node> nodes = new ArrayList<Node>();
@@ -47,7 +47,8 @@ public class MCTS extends DemoBot {
         ArrayList<Node> childNodes = new ArrayList<>();
         Node root = new Node(null, childNodes);
         nodes.add(root);
-        /*root = */expansion(root, new boolean[]{true, true, true, true, true, true});
+        /*root = */
+/*expansion(root, new boolean[]{true, true, true, true, true, true});
         //root = root.parentNode;
         turn = 0;
         isFirstToPlay = false;
@@ -148,7 +149,7 @@ public class MCTS extends DemoBot {
                 }
             }*/
 
-
+/*
         }catch (Exception e){
             System.out.println("erreur instantiation: " + e);
         }
@@ -187,7 +188,7 @@ public class MCTS extends DemoBot {
         if(nodes.size() == 0) initialize();
         Node currentNode = nodes.get(0);
         for(int y = 0; y < coupsJoués.length; y++) {
-            /* Il faut trouver la valeur qui correspond au trou */
+            /* Il faut trouver la valeur qui correspond au trou *//*
             for(int x = 0; x < currentNode.childNodes.size(); x++){
                 if(currentNode.childNodes.get(x).hole == coupsJoués[y]){
                     currentNode = currentNode.childNodes.get(x);
@@ -244,3 +245,4 @@ public class MCTS extends DemoBot {
     }
 
 }
+*/

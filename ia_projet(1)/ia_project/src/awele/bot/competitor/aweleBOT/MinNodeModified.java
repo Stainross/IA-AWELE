@@ -1,20 +1,19 @@
 package awele.bot.competitor.aweleBOT;
 
 
-import awele.bot.competitor.aweleBOT.MinMaxNode;
 import awele.core.Board;
 
 /**
  * @author Alexandre Blansché
  * Noeud Min : estimation du meilleur coup possible pour l'adversaire
  */
-public class MinNode extends MinMaxNode
+public class MinNodeModified extends MinMaxNodeModified
 {
     /**
      * Constructeur pour un noeud initial
      * @param board La situation de jeu pour laquelle il faut prendre une décision
      */
-    MinNode (Board board)
+    MinNodeModified(Board board)
     {
         this (board, 0, -Double.MAX_VALUE, Double.MAX_VALUE);
     }
@@ -26,7 +25,7 @@ public class MinNode extends MinMaxNode
      * @param alpha Le seuil pour la coupe alpha
      * @param beta Le seuil pour la coupe beta
      */
-    MinNode (Board board, int depth, double alpha, double beta)
+    MinNodeModified(Board board, int depth, double alpha, double beta)
     {
         super (board, depth, alpha, beta);
     }
@@ -67,9 +66,9 @@ public class MinNode extends MinMaxNode
      * @return Un noeud MaxNode du niveau suivant
      */
     @Override
-    protected MinMaxNode getNextNode (Board board, int depth, double alpha, double beta)
+    protected MinMaxNodeModified getNextNode (Board board, int depth, double alpha, double beta)
     {
-        return new MaxNode(board, depth, alpha, beta);
+        return new MaxNodeModified(board, depth, alpha, beta);
     }
 
     /**
