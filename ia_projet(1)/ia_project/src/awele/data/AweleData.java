@@ -11,7 +11,7 @@ import java.util.ArrayList;
  */
 public class AweleData extends ArrayList <AweleObservation>
 {
-    private static final String PATH = "data/awele.data";
+    private static final String PATH = "/ia_projet(1)/ia_project/data/awele.data";
     
     /**
      * @return Les données
@@ -32,7 +32,8 @@ public class AweleData extends ArrayList <AweleObservation>
         super ();
         try
         {
-            BufferedReader br = new BufferedReader(new FileReader(new File (path)));
+            System.out.println("Working Directory = " + System.getProperty("user.dir"));
+            BufferedReader br = new BufferedReader(new FileReader(new File (System.getProperty("user.dir")+path)));
             br.readLine ();
             String string;
             while ((string = br.readLine ()) != null)

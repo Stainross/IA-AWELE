@@ -1,11 +1,6 @@
 package awele.run;
 
-import java.util.*;
-import java.util.concurrent.*;
-
-import org.reflections.Reflections;
-
-import awele.bot.*;
+import awele.bot.Bot;
 import awele.bot.demo.random.RandomBot;
 import awele.core.Awele;
 import awele.core.InvalidBotException;
@@ -13,50 +8,41 @@ import awele.output.LogFileOutput;
 import awele.output.OutputWriter;
 import awele.output.StandardOutput;
 import javassist.Modifier;
+import org.reflections.Reflections;
+
+import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author Alexandre Blansché
  * Programme principal
  */
-public final class Main extends OutputWriter
+public final class MainSaved extends OutputWriter
 {
-    private GameResult playGame(Bot bot1, Bot bot2) throws InvalidBotException {
-        Awele awele = new Awele(bot1, bot2);
-        awele.play();
-        int winner = awele.getWinner();
-        double[] localPoints = new double[2];
-        if (winner >= 0) {
-            localPoints[winner] += 3;
-        } else {
-            localPoints[0]++;
-            localPoints[1]++;
-        }
-        return new GameResult(localPoints, awele.getNbMoves(), awele.getRunningTime());
-    }
-    private static Main instance = null;
-    
+    private static MainSaved instance = null;
+
     private static final String LOG_FILE = "awele.log";
     private static final String ANONYMOUS_LOG_FILE = "awele.anonymous.log";
     //private static final int NB_RUNS = 100;
-    private static final int NB_RUNS = 50;
+    private static final int NB_RUNS = 40;
     private static final int MAX_LEARNING_TIME = 1000 * 60 * 70 * 1; // 1 h
     private static final int MAX_DECISION_TIME = 200; // 100 ms
     private static final int MAX_MEMORY = 1024 * 1024 * 64; // 64 MiB
     private static final int MAX_TOTAL_MEMORY = 1024 * 1024 * 1024; // 1 GiB
 
     ArrayList <Bot> bots;
-    
+
     /**
      * @return Retourne l'instance de Main
      */
-    public static Main getInstance ()
+    public static MainSaved getInstance ()
     {
-        if (Main.instance == null)
-            Main.instance = new Main ();
-        return Main.instance;
+        if (MainSaved.instance == null)
+            MainSaved.instance = new MainSaved();
+        return MainSaved.instance;
     }
-    
-    private Main ()
+
+    private MainSaved()
     {
     }
 
@@ -93,7 +79,7 @@ public final class Main extends OutputWriter
     {
         long startLoading = System.currentTimeMillis ();
         long heapMaxSize = Runtime.getRuntime().maxMemory();
-        this.print ("Mémoire totale : "+ Main.formatMemory (heapMaxSize));
+        this.print ("Mémoire totale : "+ MainSaved.formatMemory (heapMaxSize));
         RandomBot random = null;
         try
         {
@@ -109,7 +95,7 @@ public final class Main extends OutputWriter
         long randomRunningTime = 0;
         int nbMoves = 0;
         
-        for (int k = 0; k < Main.NB_RUNS; k++)
+        for (int k = 0; k < MainSaved.NB_RUNS; k++)
         {
             Awele awele = new Awele (random, random);
             try
@@ -144,7 +130,7 @@ public final class Main extends OutputWriter
         for (Class <? extends Bot> subClass : subClasses)
         {
             System.gc ();
-            long memoryBefore = Main.getUsedMemory ();
+            long memoryBefore = MainSaved.getUsedMemory ();
             index++;
             this.print ("Bot " + index + "/" + subClasses.size ());
             this.print ("Classe : " + subClass.getName ());
@@ -172,27 +158,27 @@ public final class Main extends OutputWriter
                     bot.learn ();
                     long end = System.currentTimeMillis ();
                     long runningTime = end - start;
-                    this.print ("Temps d'apprentissage : " + Main.formatDuration (runningTime));
-                    if (runningTime > Main.MAX_LEARNING_TIME)
+                    this.print ("Temps d'apprentissage : " + MainSaved.formatDuration (runningTime));
+                    if (runningTime > MainSaved.MAX_LEARNING_TIME)
                         this.printDisqual (bot.getName (), "temps d'apprentissage trop long");
                     else
                     {
                         Awele awele = new Awele (bot, random);
                         awele.play ();
                         long decisionTime = (long) ((2 * awele.getRunningTime ()) / awele.getNbMoves ()) - randomAverageDecisionTime;
-                        this.print ("Durée d'une prise de décision : " + Main.formatDuration (decisionTime));
-                        if (decisionTime > Main.MAX_DECISION_TIME)
+                        this.print ("Durée d'une prise de décision : " + MainSaved.formatDuration (decisionTime));
+                        if (decisionTime > MainSaved.MAX_DECISION_TIME)
                             this.printDisqual (bot.getName (), "durée d'une prise de décision trop long");
                         else
                         {
-                            long memoryAfter = Main.getUsedMemory ();
+                            long memoryAfter = MainSaved.getUsedMemory ();
                             System.gc ();
                             long totalUsedMemory = Math.max (0, memoryAfter - memoryBefore);
-                            memoryAfter = Main.getUsedMemory ();
+                            memoryAfter = MainSaved.getUsedMemory ();
                             long usedMemory = Math.max (0, memoryAfter - memoryBefore);
-                            this.print ("Usage mémoire : " + Main.formatMemory (usedMemory));
-                            this.print ("Usage mémoire maximum : " + Main.formatMemory (totalUsedMemory));
-                            if ((usedMemory > Main.MAX_MEMORY) || (totalUsedMemory > Main.MAX_TOTAL_MEMORY))
+                            this.print ("Usage mémoire : " + MainSaved.formatMemory (usedMemory));
+                            this.print ("Usage mémoire maximum : " + MainSaved.formatMemory (totalUsedMemory));
+                            if ((usedMemory > MainSaved.MAX_MEMORY) || (totalUsedMemory > MainSaved.MAX_TOTAL_MEMORY))
                                 this.printDisqual (bot.getName (), "volume mémoire trop important");
                             else
                                 this.bots.add (bot);
@@ -212,8 +198,8 @@ public final class Main extends OutputWriter
         this.print (this.bots.size () + " bots ont été instanciés");
         System.gc ();
         long endLoading = System.currentTimeMillis ();
-        this.print ("Durée du chargement : " + Main.formatDuration (endLoading - startLoading));
-        this.print ("Mémoire utilisée : "+ Main.formatMemory (Main.getUsedMemory ()));
+        this.print ("Durée du chargement : " + MainSaved.formatDuration (endLoading - startLoading));
+        this.print ("Mémoire utilisée : "+ MainSaved.formatMemory (MainSaved.getUsedMemory ()));
     }
     
     private void tournament ()
@@ -221,22 +207,10 @@ public final class Main extends OutputWriter
         this.print ();
         this.print ("Que le championnat commence !");
         int nbBots = this.bots.size ();
-
-        // Set the desired number of threads (lower than the available processors)
-        int desiredNumberOfThreads = (int) Math.max(1, Math.floor(Runtime.getRuntime().availableProcessors() /2));
-
-        // Create a thread pool with the desired number of threads
-        ExecutorService executor = Executors.newFixedThreadPool(desiredNumberOfThreads);
-
-
         final double [] points = new double [nbBots];
         int nbGames = (nbBots * (nbBots - 1) / 2);
         int game = 0;
         long start = System.currentTimeMillis ();
-
-
-
-
         for (int i = 0; i < nbBots; i++)
             for (int j = i + 1; j < nbBots; j++)
             {
@@ -247,35 +221,36 @@ public final class Main extends OutputWriter
                 double [] localPoints = new double [2];
                 double nbMoves = 0;
                 long runningTime = 0;
-                List<Future<GameResult>> gameResults = new ArrayList<>();
-                for (int k = 0; k < Main.NB_RUNS; k++) {
-                    final Bot bot1 = this.bots.get(i);
-                    final Bot bot2 = this.bots.get(j);
-
-                    // Wrap the game simulation in a Callable
-                    Callable<GameResult> gameCallable = () -> playGame(bot1, bot2);
-
-                    // Submit the game to the thread pool
-                    Future<GameResult> gameFuture = executor.submit(gameCallable);
-                    gameResults.add(gameFuture);
-                }
-
-                // Collect and process the results
-                for (Future<GameResult> gameResultFuture : gameResults) {
-                    try {
-                        GameResult gameResult = gameResultFuture.get();
-                        localPoints[0] += gameResult.localPoints[0];
-                        localPoints[1] += gameResult.localPoints[1];
-                        nbMoves += gameResult.nbMoves;
-                        runningTime += gameResult.runningTime;
-                    } catch (InterruptedException | ExecutionException e) {
+                for (int k = 0; k < MainSaved.NB_RUNS; k++)
+                {
+                    Awele awele = new Awele (this.bots.get (i), this.bots.get (j));
+                    //this.print ();
+                    //awele.addOutputs (this.getOutputs ());
+                    //awele.addDebug (StandardOutput.getInstance ());
+                    try
+                    {
+                        awele.play ();
+                    }
+                    catch (InvalidBotException e)
+                    {
                         e.printStackTrace();
                     }
+                    nbMoves += awele.getNbMoves ();
+                    runningTime += awele.getRunningTime ();
+                    if (awele.getWinner () >= 0)
+                        localPoints [awele.getWinner ()] += 3;
+                    else
+                    {
+                        localPoints [0]++;
+                        localPoints [1]++;
+                    }
+                    if(k%20==0)
+                        this.print ("Run " + k + "/" + MainSaved.NB_RUNS);
                 }
-                localPoints [0] /= Main.NB_RUNS;
-                localPoints [1] /= Main.NB_RUNS;
-                nbMoves /=  Main.NB_RUNS;
-                runningTime /=  Main.NB_RUNS;
+                localPoints [0] /= MainSaved.NB_RUNS;
+                localPoints [1] /= MainSaved.NB_RUNS;
+                nbMoves /=  MainSaved.NB_RUNS;
+                runningTime /=  MainSaved.NB_RUNS;
                 this.print ("Score : " + localPoints [0] + " - " + localPoints [1]);
                 if (localPoints [0] == localPoints [1])
                     this.print ("Égalité");
@@ -286,14 +261,13 @@ public final class Main extends OutputWriter
                 points [i] += localPoints [0];
                 points [j] += localPoints [1];
                 this.print ("Nombre de coups joués : " + nbMoves + " par match");
-                this.print ("Durée : " + Main.formatDuration (runningTime) + " par match");
+                this.print ("Durée : " + MainSaved.formatDuration (runningTime) + " par match");
                 System.gc ();
-                this.print ("Mémoire utilisée : "+ Main.formatMemory (Main.getUsedMemory ()));
+                this.print ("Mémoire utilisée : "+ MainSaved.formatMemory (MainSaved.getUsedMemory ()));
             }
-        executor.shutdown();
         long end = System.currentTimeMillis ();
         this.print ();
-        this.print ("Durée du championnat : " + Main.formatDuration (end - start));
+        this.print ("Durée du championnat : " + MainSaved.formatDuration (end - start));
         for (int i = 0; i < points.length; i++)
             points [i] = Math.round (points [i] * 100) / 100.;
         this.print ();
@@ -330,10 +304,10 @@ public final class Main extends OutputWriter
      */
     public static void main (String [] args)
     {
-        Main main = Main.getInstance ();
+        MainSaved main = MainSaved.getInstance ();
         main.addOutput (StandardOutput.getInstance ());
-        main.addOutput (new LogFileOutput (Main.LOG_FILE));
-        main.addOutput (new LogFileOutput (Main.ANONYMOUS_LOG_FILE, true));
+        main.addOutput (new LogFileOutput (MainSaved.LOG_FILE));
+        main.addOutput (new LogFileOutput (MainSaved.ANONYMOUS_LOG_FILE, true));
         main.loadBots ();
         main.tournament ();
     }

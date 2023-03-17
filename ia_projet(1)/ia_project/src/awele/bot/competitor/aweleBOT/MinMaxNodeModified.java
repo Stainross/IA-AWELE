@@ -4,12 +4,18 @@ package awele.bot.competitor.aweleBOT;
 import awele.core.Board;
 import awele.core.InvalidBotException;
 
+import java.util.HashMap;
+
 /**
  * @author Alexandre Blansché
  * Noeud d'un arbre MinMax
  */
 public abstract class MinMaxNodeModified
 {
+    /**
+     * Tableau des parties précédentes
+     */
+
     /** Numéro de joueur de l'IA */
     private static int player;
 
@@ -68,8 +74,20 @@ public abstract class MinMaxNodeModified
                         }
                         /* Sinon (si la profondeur maximale est atteinte), on évalue la situation actuelle */
                         else{
-                            // LIGNE A MODIFIER
-                            this.decision [i] = this.diffScore (copy)+evaluateBoardForCurrentPlayer(copy);
+
+                            if(BoardType(board).equals("DEBUT")){
+                                this.decision [i] = 3*this.diffScore (copy)+7*earlyGameStrategie(copy)/10;
+                                //this.decision [i] = this.diffScore (copy);
+                            }
+                            else if(BoardType(board).equals("MILIEU")){
+                                //this.decision [i] = this.diffScore (copy)+vulnerableHoleScore(copy.getPlayerHoles(), copy.getOpponentHoles());
+                                this.decision [i] = 3*this.diffScore (copy)+7*earlyGameStrategie(copy)/10;
+                            }
+                            else if(BoardType(board).equals("FIN")){
+                                this.decision [i] = 4*this.diffScore (copy)+6*lateGameStrategie(copy)/10;
+                            }
+                            //this.decision [i] = 3*this.diffScore (copy)+7*earlyGameStrategie(copy)/10;
+
                         }
                     }
                     /* L'évaluation courante du noeud est mise à jour, selon le type de noeud (MinNode ou MaxNode) */
@@ -87,6 +105,84 @@ public abstract class MinMaxNodeModified
                 }
             }
     }
+
+    private int lateGameStrategie(Board board) {
+        //generate late game strateegy of the awele game
+        int score = 0;
+        if(board.getPlayerSeeds()>board.getOpponentSeeds()){
+            score = 10;
+        }
+        else if(board.getPlayerSeeds()<board.getOpponentSeeds()){
+            score = -10;
+        }
+        score+=vulnerableHoleScore(board.getPlayerHoles(), board.getOpponentHoles());
+        score-=vulnerableHoleScore(board.getOpponentHoles(), board.getPlayerHoles());
+        return score;
+    }
+
+    private int middleGameStrategie(Board copy) {
+        int[] opponentHoles = copy.getOpponentHoles();
+        int[] playerHoles = copy.getPlayerHoles();
+        int score = 0;
+
+        int waitingPits = 0;
+        for (int i = 0; i < playerHoles.length; i++) {
+            // Encourage the formation of granaries in the player's pits
+            if (playerHoles[i] > 12) {
+                score += 5;
+            }
+            // Discourage the formation of granaries in the opponent's pits
+            if (opponentHoles[i] >12) {
+                score -= 5;
+            }
+            // Encourage the creation of vulnerable holes in the opponent's camp
+            if (opponentHoles[i] < 3) {
+                score += 2;
+            }
+            // Discourage the creation of vulnerable holes in the player's camp
+            if (playerHoles[i] < 2) {
+                score -= 2;
+            }
+            // Encourage having pits with a few seeds for waiting moves
+            if (playerHoles[i] > 0 && playerHoles[i] < 3) {
+                waitingPits++;
+            }
+        }
+        /*
+        // Encourage having a few pits with a few seeds for waiting moves
+        if (waitingPits >= 2) {
+            score += 4;
+        }*/
+
+        return score;
+    }
+
+    private double earlyGameStrategie(Board board) {
+        int[] opponentHoles = board.getOpponentHoles();
+        int[] playerHoles = board.getPlayerHoles();
+        double score =  0;
+
+            for (int i = 1; i < opponentHoles.length; i++) {
+                if (opponentHoles[i - 1] > 0 && opponentHoles[i] > 0) {
+                    score += 5;
+                }
+                if (playerHoles[i - 1] > 0 && playerHoles[i] > 0) {
+                    score -= 5;
+                }
+            }
+            // Prefer non-consecutive hole sequences
+            if (playerHoles[1] > 0 && playerHoles[3] > 0 && playerHoles[5] > 0 && playerHoles[4] == 0 && playerHoles[2] == 0 && playerHoles[0] == 0) {
+                score += 4;
+            }
+            if (playerHoles[4] > 0 && playerHoles[2] > 0 && playerHoles[0] > 0 && playerHoles[1] == 0 && playerHoles[3] == 0 && playerHoles[5] == 0) {
+                score += 4;
+            }
+        score+=vulnerableHoleScore(playerHoles, opponentHoles);
+        score-=vulnerableHoleScore(opponentHoles, playerHoles);
+        return score;
+
+    }
+
     public String BoardType(Board board){
         if (board.getNbSeeds() >=32)
             return "DEBUT";
@@ -95,48 +191,28 @@ public abstract class MinMaxNodeModified
         else
             return "MILIEU";
     }
-    public double evaluateBoardForCurrentPlayer(Board board){
 
-        double score = 0;
-        if(BoardType(board) == "DEBUT") {
-            int[] opponentHoles = board.getOpponentHoles();
-            int[] playerHoles = board.getPlayerHoles();
-            for (int i = 1; i < opponentHoles.length; i++) {
-                if (opponentHoles[i - 1] > 0 && opponentHoles[i] > 0) {
-                    score += 1;
-                }
-            }
-            for (int i = 1; i < playerHoles.length; i++) {
-                if (playerHoles[i - 1] > 0 && playerHoles[i] > 0) {
-                    score -= 1;
-                }
-            }
-        } else if (BoardType(board) == "MILIEU") {/*
-            int[] opponentHoles = board.getOpponentHoles();
-            int[] playerHoles = board.getPlayerHoles();
-            for (int i = 1; i < playerHoles.length; i++) {
-                if (playerHoles[i - 1] > 0 && playerHoles[i] > 0) {
-                    score -= 1;
-                }
-            }*/
-        } /*else if (BoardType(board) == "FIN") {
-            int[] opponentHoles = board.getOpponentHoles();
-            int[] playerHoles = board.getPlayerHoles();
-            for (int i = 1; i < opponentHoles.length; i++) {
-                if (opponentHoles[i - 1] > 0 && opponentHoles[i] > 0) {
-                    score += 1;
-                }
-            }
-            for (int i = 1; i < playerHoles.length; i++) {
-                if (playerHoles[i - 1] > 0 && playerHoles[i] > 0) {
-                    score -= 1;
-                }
-            }
-        }*/
+    public double vulnerableHoleScore(int[] holes, int[] opponentHoles) {
+        int vulnerableHoles = 0;
+        int consecutiveVulnerableHoles = 0;
+        for (int i = 0; i < holes.length; i++) {
+            int seeds = holes[i];
+            if(seeds==0)continue;
+            int finalPosition = (i + seeds) % 12;
 
+            // If finalPosition is in the opponent's side and results in 2 or 3 seeds
+            if (finalPosition >= 6 &&
+                    ((opponentHoles[finalPosition - 6] + seeds) % 12 >= 2 && (opponentHoles[finalPosition - 6] + seeds) % 12 <= 3)) {
+                consecutiveVulnerableHoles++;
+                vulnerableHoles += 3 * consecutiveVulnerableHoles;
+            } else {
+                consecutiveVulnerableHoles = 0;
+            }
+        }
 
-        return score;
+        return vulnerableHoles;
     }
+
 
     /** Pire score pour un joueur */
     protected abstract double worst ();

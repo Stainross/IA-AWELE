@@ -7,8 +7,10 @@ import awele.bot.demo.minmax.MinMaxNode;
 import awele.core.Board;
 import awele.core.InvalidBotException;
 
+import java.util.HashMap;
+
 public class minmaxBetterBot extends CompetitorBot {
-    private static final int MAX_DEPTH = 6;
+    private static final int MAX_DEPTH = 7;
     public minmaxBetterBot() throws InvalidBotException
     {
         this.setBotName ("IAWeleBot MinMax");

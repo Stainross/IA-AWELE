@@ -97,7 +97,7 @@ public class Awelicopter extends CompetitorBot {
                 String decisionTimeString = String.valueOf(extractMilliseconds(decisionTime));
                 System.out.println("Temps de décision : "+decisionTimeString+" ms pour la profondeur "+i);
                 if(Integer.parseInt(decisionTimeString)>200-margeInit){
-                    goodDepth = i - 1;
+                    goodDepth = i - 2;
                     System.out.println("Awélicopter sera initialisé à la profondeur : "+goodDepth+" avec une marge de sécurité de : "+margeInit+" ms");
 
                     break;
