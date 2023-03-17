@@ -3,8 +3,13 @@ package awele.bot.competitor.aweleBOT;
 
 import awele.core.Board;
 import awele.core.InvalidBotException;
+import awele.data.AweleData;
+import awele.data.AweleObservation;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Optional;
 
 /**
  * @author Alexandre Blansché
@@ -12,10 +17,7 @@ import java.util.HashMap;
  */
 public abstract class MinMaxNodeModified
 {
-    /**
-     * Tableau des parties précédentes
-     */
-
+    private static  ArrayList<AweleObservation> aweleObservations;
     /** Numéro de joueur de l'IA */
     private static int player;
 
@@ -37,6 +39,9 @@ public abstract class MinMaxNodeModified
      */
     public  MinMaxNodeModified(Board board, int depth, double alpha, double beta)
     {
+
+
+
         /* On crée un tableau des évaluations des coups à jouer pour chaque situation possible */
         this.decision = new double [Board.NB_HOLES];
         /* Initialisation de l'évaluation courante */
@@ -85,6 +90,21 @@ public abstract class MinMaxNodeModified
                             }
                             else if(BoardType(board).equals("FIN")){
                                 this.decision [i] = 4*this.diffScore (copy)+6*lateGameStrategie(copy)/10;
+                            }
+
+                            // Check if the current state exists in the list of known AweleObservations
+                            Optional<AweleObservation> knownObservation = aweleObservations.stream().filter(obs -> Arrays.equals(obs.getPlayerHoles(), board.getPlayerHoles()) && Arrays.equals(obs.getOppenentHoles(), board.getOpponentHoles())).findFirst();
+
+                            if (knownObservation.isPresent()) {
+                                AweleObservation observation = knownObservation.get();
+                                if(observation.isWon()){
+                                    this.decision [i] += 100;
+                                }
+                                else {
+                                    this.decision [i] -= 100;
+                                }
+                                // Adjust the score based on the known best move and result
+                                // You can assign a higher score if the result is "G" (win) and a lower score if it's "P" (draw)
                             }
                             //this.decision [i] = 3*this.diffScore (copy)+7*earlyGameStrategie(copy)/10;
 
@@ -220,8 +240,9 @@ public abstract class MinMaxNodeModified
     /**
      * Initialisation
      */
-    protected static void initialize (Board board, int maxDepth)
+    protected static void initialize (Board board, int maxDepth,ArrayList<AweleObservation> aweleObs)
     {
+        aweleObservations = aweleObs;
         MinMaxNodeModified.maxDepth = maxDepth;
         MinMaxNodeModified.player = board.getCurrentPlayer ();
     }

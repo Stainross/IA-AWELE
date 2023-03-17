@@ -6,11 +6,16 @@ import awele.bot.demo.minmax.MinMaxBot;
 import awele.bot.demo.minmax.MinMaxNode;
 import awele.core.Board;
 import awele.core.InvalidBotException;
+import awele.data.AweleData;
+import awele.data.AweleObservation;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class minmaxBetterBot extends CompetitorBot {
-    private static final int MAX_DEPTH = 7;
+    private static final int MAX_DEPTH = 6;
+    ArrayList<AweleObservation> aweleObservations;
     public minmaxBetterBot() throws InvalidBotException
     {
         this.setBotName ("IAWeleBot MinMax");
@@ -28,12 +33,18 @@ public class minmaxBetterBot extends CompetitorBot {
 
     @Override
     public double[] getDecision(Board board) {
-        MinMaxNodeModified.initialize (board, this.MAX_DEPTH);
+        MinMaxNodeModified.initialize (board, this.MAX_DEPTH, aweleObservations);
         return new MaxNodeModified(board).getDecision ();
     }
 
     @Override
     public void learn() {
+        AweleData data = AweleData.getInstance ();
+        aweleObservations = new ArrayList<>();
+
+        for (AweleObservation observation : data) {
+            aweleObservations.add(observation);
+        }
 
     }
 }

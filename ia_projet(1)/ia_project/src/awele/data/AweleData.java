@@ -32,7 +32,7 @@ public class AweleData extends ArrayList <AweleObservation>
         super ();
         try
         {
-            System.out.println("Working Directory = " + System.getProperty("user.dir"));
+            //System.out.println("Working Directory = " + System.getProperty("user.dir"));
             BufferedReader br = new BufferedReader(new FileReader(new File (System.getProperty("user.dir")+path)));
             br.readLine ();
             String string;
