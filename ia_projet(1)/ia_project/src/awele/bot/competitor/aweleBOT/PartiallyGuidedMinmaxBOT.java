@@ -44,6 +44,5 @@ public class PartiallyGuidedMinmaxBOT extends DemoBot {
     }
     @Override
     public void learn() {
-        //this.random = new java.util.Random(System.currentTimeMillis ());
     }
 }

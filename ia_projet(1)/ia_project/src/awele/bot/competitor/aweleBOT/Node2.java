@@ -13,6 +13,8 @@ public class Node2 {
     public double totalReward; // Total reward obtained from this node
     public boolean expanded; // Whether this node has been fully expanded
 
+    public int holeIndex;
+
     public Node2(Board board, Node2 parent) {
         this.board = board;
         this.parent = parent;
@@ -26,6 +28,9 @@ public class Node2 {
     public double getUCB1Score() {
         double exploitation = (visitCount == 0) ? 0 : (totalReward / visitCount);
         double exploration = C * Math.sqrt(Math.log(parent.visitCount) / visitCount);
+        if (Double.isNaN(exploitation) || Double.isNaN(exploration) || exploration == 0) {
+            return Double.NEGATIVE_INFINITY;
+        }
         return exploitation + exploration;
     }
 }

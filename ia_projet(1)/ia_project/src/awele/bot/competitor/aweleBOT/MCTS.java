@@ -26,19 +26,15 @@ public class MCTS extends DemoBot {
 
     private PartiallyRandomBOT p2 = null;
     private PartiallyRandomBOT p4 = null;
-    private PartiallyGuidedMinmaxBOT p1 = null;
-    private PartiallyGuidedMinmaxBOT p3 = null;
     private ArrayList<double[]> currentNodeDecisions = null;
 
     private ArrayList<Integer> movesMCTS = new ArrayList<Integer>();
     private ArrayList<Integer> movesOpponent = new ArrayList<Integer>();
     public MCTS() throws InvalidBotException {
-        this.setBotName ("AweleBOT- mcts TEST");
+        this.setBotName ("AweleBOT- MCTS VERSION 1");
         this.setAuthors("LALLEMENT Eliott","SAFSAF Sofyann");
         p2 = new PartiallyRandomBOT();
         p4 = new PartiallyRandomBOT();
-        p1 = new PartiallyGuidedMinmaxBOT();
-        p3 = new PartiallyGuidedMinmaxBOT();
     }
 
     @Override
@@ -47,8 +43,7 @@ public class MCTS extends DemoBot {
         ArrayList<Node> childNodes = new ArrayList<>();
         Node root = new Node(null, childNodes);
         nodes.add(root);
-        /*root = */expansion(root, new boolean[]{true, true, true, true, true, true});
-        //root = root.parentNode;
+        expansion(root, new boolean[]{true, true, true, true, true, true});
         turn = 0;
         isFirstToPlay = false;
     }
@@ -96,22 +91,16 @@ public class MCTS extends DemoBot {
             }
         }
         currentNode.childNodes = childNodes;
-        //System.out.println(currentNode + " : CREATION DE FILS/ " + currentNode.childNodes);
         return currentNode.childNodes.get(0);
     }
-    //Simuler une partie en prenant des actions aléatoires jusqu'à un noeud terminal
     public double simulation(Board board, Node node){
         int value = playGame(board, node);
         return value;
     }
-
-    //Jouer une partie contre un bot random
-    //Il faut jouer manuellement les premiers coups donnés par l'arbre
     public int playGame(Board board, Node node){
         try{
             ArrayList<Integer> f = (ArrayList<Integer>) Arrays.stream(board.getLog(board.getCurrentPlayer())).boxed().collect(Collectors.toList());
             ArrayList<Integer> f2 = (ArrayList<Integer>) Arrays.stream(board.getLog(Board.otherPlayer(board.getCurrentPlayer()))).boxed().collect(Collectors.toList());
-            //if(nbDecisions<40) {
                 p2.setFirstMoves(f2);
                 p4.setFirstMoves(f);
                 p2.learn();
@@ -128,36 +117,11 @@ public class MCTS extends DemoBot {
                     if(a.getWinner()==-1) return 1;
                     return a.getWinner() == 0 ?  0: 2;
                 }
-            /*}
-            else{
-                p1.setFirstMoves(f2);
-                p3.setFirstMoves(f);
-                p1.learn();
-                p3.learn();
-                Awele a;
-                if(isFirstToPlay) {
-                    a = new Awele(p3, p1);
-                    a.play();
-                    if(a.getWinner()==-1) return 0;
-                    return a.getWinner() == 0 ?  10 + (int)a.getNbMoves(): -10 * (200-(int)a.getNbMoves());
-                }else {
-                    a = new Awele(p1, p3);
-                    a.play();
-                    if(a.getWinner()==-1) return 0;
-                    return a.getWinner() == 0 ?  -10 * (200-(int)a.getNbMoves()): 10 + (int)a.getNbMoves();
-                }
-            }*/
-
-
         }catch (Exception e){
             System.out.println("erreur instantiation: " + e);
         }
         return 0;
     }
-
-    //Problème: créer 6 noeuds fils mais certaines décisions sont impossibles
-    //Que faire ? Créer les 6 noeuds quand même ?
-    //Ajouter un paramètre sur chaque noeud correspondant à la case associée ?
     public ArrayList<double[]> getDecisionsFromCurrentNode(){
         Node node = this.currentNode;
         ArrayList<double[]> result = new ArrayList<>();
@@ -182,12 +146,10 @@ public class MCTS extends DemoBot {
         System.out.println(Arrays.toString(moves));
     }
     public double[] getMCTSDecision(Board board){
-        //Récupérer le noeud actuel de l'arbre
         int[] coupsJoués = board.getLog(board.getCurrentPlayer());
         if(nodes.size() == 0) initialize();
         Node currentNode = nodes.get(0);
         for(int y = 0; y < coupsJoués.length; y++) {
-            /* Il faut trouver la valeur qui correspond au trou */
             for(int x = 0; x < currentNode.childNodes.size(); x++){
                 if(currentNode.childNodes.get(x).hole == coupsJoués[y]){
                     currentNode = currentNode.childNodes.get(x);
@@ -195,7 +157,7 @@ public class MCTS extends DemoBot {
                 }
             }
         }
-        for (int i = 0; i < 50; i++) {
+        for (int i = 0; i < 400; i++) {
             Node test = selection(currentNode);
             if (test.alreadyVisited()) {
                 test = expansion(test,board.validMoves(board.getCurrentPlayer()));
@@ -219,9 +181,6 @@ public class MCTS extends DemoBot {
             }
         }
         turn += 1;
-        //double[] decision = getMCTSDecision((Board) board.clone());
-
-        //clearNodes();
         return getMCTSDecision(board);
     }
 
