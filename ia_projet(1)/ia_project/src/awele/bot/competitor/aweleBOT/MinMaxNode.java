@@ -1,8 +1,12 @@
 package awele.bot.competitor.aweleBOT;
 
 
+import awele.core.Awele;
 import awele.core.Board;
 import awele.core.InvalidBotException;
+
+import java.util.Arrays;
+import java.util.HashMap;
 
 /**
  * @author Alexandre Blansché
@@ -22,6 +26,8 @@ public abstract class MinMaxNode
     /** Évaluation des coups selon MinMax */
     private double [] decision;
 
+    private static HashMap<String, double[]> transpositionTable;
+
     /**
      * Constructeur...
      * @param board L'état de la grille de jeu
@@ -31,6 +37,18 @@ public abstract class MinMaxNode
      */
     public MinMaxNode (Board board, int depth, double alpha, double beta)
     {
+        // Check if the game state has already been evaluated
+        String stateKey = board.toString();
+        //System.out.println(transpositionTable.size());
+        if (transpositionTable.containsKey(stateKey)) {
+            decision = transpositionTable.get(stateKey);
+            //System.out.println("Déjà vu : " + stateKey + " : decision : " + Arrays.toString(decision));
+            return;
+        }
+
+        // Rest of the Alpha-Beta pruning algorithm
+
+
         /* On crée un tableau des évaluations des coups à jouer pour chaque situation possible */
         this.decision = new double [Board.NB_HOLES];
         /* Initialisation de l'évaluation courante */
@@ -49,14 +67,18 @@ public abstract class MinMaxNode
                 {
                     int score = copy.playMoveSimulationScore (copy.getCurrentPlayer (), decision);
                     copy = copy.playMoveSimulationBoard (copy.getCurrentPlayer (), decision);
+                    stateKey = copy.toString();
                     /* Si la nouvelle situation de jeu est un coup qui met fin à la partie,
                        on évalue la situation actuelle */
                     if ((score < 0) ||
                             (copy.getScore (Board.otherPlayer (copy.getCurrentPlayer ())) >= 25) ||
-                            (copy.getNbSeeds () <= 6))
-                        this.decision [i] = this.diffScore (copy);
+                            (copy.getNbSeeds () <= 6)) {
+                        //this.decision [i] = this.diffScore (copy);
+                        this.decision[i] = this.customizedScore(copy);
+                        transpositionTable.put(stateKey, decision);
+                        //System.out.println("On enregistre : " + stateKey + " decision : " + Arrays.toString(decision));
                         /* Sinon, on explore les coups suivants */
-                    else
+                    }else
                     {
                         /* Si la profondeur maximale n'est pas atteinte */
                         if (depth < MinMaxNode.maxDepth)
@@ -67,8 +89,11 @@ public abstract class MinMaxNode
                             this.decision [i] = child.getEvaluation ();
                         }
                         /* Sinon (si la profondeur maximale est atteinte), on évalue la situation actuelle */
-                        else
-                            this.decision [i] = this.diffScore (copy);
+                        else {
+                            //this.decision [i] = this.diffScore (copy);
+                            this.decision[i] = this.customizedScore(copy);
+                            transpositionTable.put(stateKey, decision);
+                        }
                     }
                     /* L'évaluation courante du noeud est mise à jour, selon le type de noeud (MinNode ou MaxNode) */
                     this.evaluation = this.minmax (this.decision [i], this.evaluation);
@@ -96,11 +121,54 @@ public abstract class MinMaxNode
     {
         MinMaxNode.maxDepth = maxDepth;
         MinMaxNode.player = board.getCurrentPlayer ();
+        MinMaxNode.transpositionTable = new HashMap<String, double[]>();
     }
 
     private int diffScore (Board board)
     {
         return board.getScore (MinMaxNode.player) - board.getScore (Board.otherPlayer (MinMaxNode.player));
+    }
+
+
+    private int customizedScore (Board board){
+        int myScore = board.getScore(MinMaxNode.player);
+        int oppScore = board.getScore(Board.otherPlayer(MinMaxNode.player));
+
+        // Start of game strategy
+        int emptyCount = 0;
+        int nonEmptyCount = 0;
+        int myMobility = 0;
+        int oppMobility = 0;
+        int myGranaryScore = 0;
+        int oppVulnerableCount = 0;
+
+        int mySeedsInHand = board.getPlayerSeeds();
+        int oppSeedsInHand = board.getOpponentSeeds();
+        for (int i = 0; i < 6; i++) {
+            if (board.getPlayerHoles()[i] == 0)
+                emptyCount++;
+            else if (board.getPlayerHoles()[i] > 2)
+                nonEmptyCount++;
+
+            if (board.validMoves(MinMaxNode.player)[i])
+                myMobility++;
+            if (board.validMoves(Board.otherPlayer(MinMaxNode.player))[i])
+                oppMobility++;
+            if (board.getPlayerHoles()[i] >= 2 * (6 - i))
+                myGranaryScore += board.getPlayerHoles()[i];
+            if (board.getOpponentHoles()[i] < 2)
+                oppVulnerableCount++;
+
+        }
+        int startScore = 10 * (emptyCount - nonEmptyCount) + 2 * (myMobility - oppMobility);
+
+        // Middle of game strategy
+        int middleScore = myGranaryScore + 5 * oppVulnerableCount;
+
+        // Bonus for having more seeds in hand
+        int seedBonus = 5 * (mySeedsInHand - oppSeedsInHand);
+
+        return 20 * (myScore - oppScore) + startScore + middleScore;
     }
 
     /**
