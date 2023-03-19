@@ -1,6 +1,7 @@
 package awele.bot.competitor.aweleBOT;
 
 
+import awele.bot.Lucas.Awelicopter;
 import awele.core.Board;
 import awele.core.InvalidBotException;
 import awele.data.AweleData;
@@ -39,8 +40,7 @@ public abstract class MinMaxNodeModified
      */
     public  MinMaxNodeModified(Board board, int depth, double alpha, double beta)
     {
-
-
+        //maxDepth = minmaxBetterBot.MAX_DEPTH + 1 -( board.getNbSeeds() / 24);
 
         /* On crée un tableau des évaluations des coups à jouer pour chaque situation possible */
         this.decision = new double [Board.NB_HOLES];
@@ -79,35 +79,42 @@ public abstract class MinMaxNodeModified
                         }
                         /* Sinon (si la profondeur maximale est atteinte), on évalue la situation actuelle */
                         else{
-
-                            if(BoardType(board).equals("DEBUT")){
+                            String boardType = BoardType(board);
+                            if(boardType.equals("DEBUT")){
                                 this.decision [i] = 3*this.diffScore (copy)+7*earlyGameStrategie(copy)/10;
                                 //this.decision [i] = this.diffScore (copy);
                             }
-                            else if(BoardType(board).equals("MILIEU")){
+                            else if(boardType.equals("MILIEU")){
                                 //this.decision [i] = this.diffScore (copy)+vulnerableHoleScore(copy.getPlayerHoles(), copy.getOpponentHoles());
                                 this.decision [i] = 3*this.diffScore (copy)+7*earlyGameStrategie(copy)/10;
+                               // this.decision[i] = 4 * this.diffScore(copy) + 6 * middleGameStrategy(copy) / 10;
                             }
-                            else if(BoardType(board).equals("FIN")){
+                            else if(boardType.equals("FIN")){
                                 this.decision [i] = 4*this.diffScore (copy)+6*lateGameStrategie(copy)/10;
                             }
 
+
                             // Check if the current state exists in the list of known AweleObservations
+
                             Optional<AweleObservation> knownObservation = aweleObservations.stream().filter(obs -> Arrays.equals(obs.getPlayerHoles(), board.getPlayerHoles()) && Arrays.equals(obs.getOppenentHoles(), board.getOpponentHoles())).findFirst();
 
                             if (knownObservation.isPresent()) {
                                 AweleObservation observation = knownObservation.get();
-                                if(observation.isWon()){
-                                    this.decision [i] += 100;
-                                }
-                                else {
-                                    this.decision [i] -= 100;
-                                }
-                                // Adjust the score based on the known best move and result
-                                // You can assign a higher score if the result is "G" (win) and a lower score if it's "P" (draw)
+                                if(observation.getMove()==i )
+                                    if(observation.isWon()) {
+                                        if (observation.getPlayerHoles() == board.getPlayerHoles()) {
+                                            this.decision[i] += 100;
+                                        } else {
+                                          this.decision[i] -= 100;
+                                        }
+                                    }else {
+                                        if (observation.getPlayerHoles() == board.getPlayerHoles()) {
+                                            this.decision[i] -= 100;
+                                        } else {
+                                            this.decision[i] += 100;
+                                        }
+                                    }
                             }
-                            //this.decision [i] = 3*this.diffScore (copy)+7*earlyGameStrategie(copy)/10;
-
                         }
                     }
                     /* L'évaluation courante du noeud est mise à jour, selon le type de noeud (MinNode ou MaxNode) */
@@ -126,6 +133,7 @@ public abstract class MinMaxNodeModified
             }
     }
 
+
     private int lateGameStrategie(Board board) {
         //generate late game strateegy of the awele game
         int score = 0;
@@ -140,7 +148,41 @@ public abstract class MinMaxNodeModified
         return score;
     }
 
-    private int middleGameStrategie(Board copy) {
+    private double middleGameStrategy(Board board) {
+        int[] opponentHoles = board.getOpponentHoles();
+        int[] playerHoles = board.getPlayerHoles();
+        double score = 0;
+
+        // Calculate mobility
+        int playerMobility = 0;
+        int opponentMobility = 0;
+        for (int i = 0; i < playerHoles.length; i++) {
+            if (playerHoles[i] > 0) {
+                playerMobility++;
+            }
+            if (opponentHoles[i] > 0) {
+                opponentMobility++;
+            }
+            if (playerHoles[i] > 11) {
+                score += 5;
+            }
+            // Discourage the formation of granaries in the opponent's pits
+            if (opponentHoles[i] >11) {
+                score -= 5;
+            }
+        }
+        score += playerMobility - opponentMobility;
+
+
+        // Add other factors
+        score += 2*vulnerableHoleScore(playerHoles, opponentHoles);
+        score -= 2*vulnerableHoleScore(opponentHoles, playerHoles);
+
+        return score;
+    }
+
+
+    private int middleGameStrategieSave(Board copy) {
         int[] opponentHoles = copy.getOpponentHoles();
         int[] playerHoles = copy.getPlayerHoles();
         int score = 0;
@@ -155,24 +197,14 @@ public abstract class MinMaxNodeModified
             if (opponentHoles[i] >12) {
                 score -= 5;
             }
-            // Encourage the creation of vulnerable holes in the opponent's camp
-            if (opponentHoles[i] < 3) {
-                score += 2;
-            }
-            // Discourage the creation of vulnerable holes in the player's camp
-            if (playerHoles[i] < 2) {
-                score -= 2;
-            }
+
+
             // Encourage having pits with a few seeds for waiting moves
             if (playerHoles[i] > 0 && playerHoles[i] < 3) {
-                waitingPits++;
+                score += 4;;
             }
         }
-        /*
-        // Encourage having a few pits with a few seeds for waiting moves
-        if (waitingPits >= 2) {
-            score += 4;
-        }*/
+
 
         return score;
     }

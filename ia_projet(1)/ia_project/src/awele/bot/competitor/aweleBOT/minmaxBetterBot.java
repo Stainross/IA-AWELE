@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class minmaxBetterBot extends CompetitorBot {
-    private static final int MAX_DEPTH = 6;
+    public static final int MAX_DEPTH = 6;
     ArrayList<AweleObservation> aweleObservations;
     public minmaxBetterBot() throws InvalidBotException
     {
