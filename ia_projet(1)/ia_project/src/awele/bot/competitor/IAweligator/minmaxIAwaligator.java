@@ -1,9 +1,6 @@
-package awele.bot.competitor.aweleBOT;
+package awele.bot.competitor.IAweligator;
 
 import awele.bot.CompetitorBot;
-import awele.bot.demo.minmax.MaxNode;
-import awele.bot.demo.minmax.MinMaxBot;
-import awele.bot.demo.minmax.MinMaxNode;
 import awele.bot.demo.random.RandomBot;
 import awele.core.Awele;
 import awele.core.Board;
@@ -14,14 +11,14 @@ import java.util.ArrayList;
 
 
 
-public class minmaxBetterBot extends CompetitorBot {
-    public static  int MAX_DEPTH = 8;
+public class minmaxIAwaligator extends CompetitorBot {
+    public static  int MAX_DEPTH = 4;
     ArrayList<AweleObservation> aweleObservations;
 
 
-    public minmaxBetterBot() throws InvalidBotException
+    public minmaxIAwaligator() throws InvalidBotException
     {
-        this.setBotName ("IAWeleBot MinMax");
+        this.setBotName ("IAwaligator");
         this.setAuthors ("Eliott Lallement", "Sofyann Safsaf");
     }
     @Override
@@ -48,6 +45,12 @@ public class minmaxBetterBot extends CompetitorBot {
         for (AweleObservation observation : data) {
             aweleObservations.add(observation);
         }
+
+        learnWithDynamicDepth();//Si le bot dépasse le temps moyen de decisions malgrès cette fonction
+        //il faut commenter la ligne ci-dessus et décommenter la ligne ci-dessous
+        //this.MAX_DEPTH = 8;
+        //ou
+        //this.MAX_DEPTH = 6; //pas de valeur impaire
     }
 
 
@@ -88,12 +91,14 @@ public class minmaxBetterBot extends CompetitorBot {
             }
             long randomAverageDecisionTime = randomRunningTime / nbMoves;
 
-            long averageDecisionTime = 0;
-            int nbRunAverage = 5;
+
+            int nbRunAverage = 10;
             for(int j=0;j<10;j++){
-                averageDecisionTime = 0;
+                long averageDecisionTime = 0;
+                long maxDecisionTime = 0;
+                long minDecisionTime = Long.MAX_VALUE;
                 for(int i=0;i<nbRunAverage;i++){
-                    System.out.println("RandomBot vs MinMaxBot");
+                    //System.out.println("RandomBot vs MinMaxBot");
                     Awele awele = new Awele (this, randomBot);
                     try
                     {
@@ -106,15 +111,29 @@ public class minmaxBetterBot extends CompetitorBot {
                     randomRunningTime += awele.getRunningTime ();
                     long decisionTime = (long) ((2 * awele.getRunningTime ()) / awele.getNbMoves ()) - randomAverageDecisionTime;
                     averageDecisionTime+=decisionTime;
-                    System.out.println("Durée d'une prise de décision : " +decisionTime);
+                    if(decisionTime>maxDecisionTime)
+                        maxDecisionTime = decisionTime;
+                    if (decisionTime<minDecisionTime)
+                        minDecisionTime = decisionTime;
+                    if(decisionTime>400)
+                    {
+                        System.out.println("averageDecisionTime beaucoup trop long sur une run: "+averageDecisionTime);
+                        break;
+                    }
+
                 }
                 averageDecisionTime/=nbRunAverage;
-                if(averageDecisionTime>120){
+                System.out.println("maxDecisionTime : "+maxDecisionTime);
+                System.out.println("averageDecisionTime : "+averageDecisionTime);
+                System.out.println("minDecisionTime : "+minDecisionTime);
+                if(averageDecisionTime>160||maxDecisionTime>220){
                     this.MAX_DEPTH = MAX_DEPTH-2;
                     System.out.println("averageDecisionTime trop long: "+averageDecisionTime);
                     break;
                 }
                 this.MAX_DEPTH = this.MAX_DEPTH+2;
+
+                System.out.println("new max depth : "+this.MAX_DEPTH);
             }
             System.out.println("Max depth final : "+this.MAX_DEPTH);
 

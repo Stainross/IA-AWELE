@@ -1,4 +1,4 @@
-package awele.bot.competitor.aweleBOT;
+package awele.bot.competitor.IAweligator;
 
 
 import awele.core.Board;

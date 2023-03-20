@@ -1,18 +1,11 @@
-package awele.bot.competitor.aweleBOT;
+package awele.bot.competitor.IAweligator;
 
 
-import awele.bot.Lucas.Awelicopter;
-import awele.bot.demo.minmax.MinMaxBot;
 import awele.core.Board;
 import awele.core.InvalidBotException;
-import awele.data.AweleData;
 import awele.data.AweleObservation;
-import javassist.expr.Instanceof;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Optional;
 
 
 /**
@@ -54,7 +47,7 @@ public abstract class MinMaxNodeModified
     {
 
         // Si le bot est disqualifié à cause du temps de décision trop long commenté la ligne en dessous
-        if(board.getNbSeeds()<12) maxDepth = minmaxBetterBot.MAX_DEPTH+2;
+        if(board.getNbSeeds()<12) maxDepth = minmaxIAwaligator.MAX_DEPTH+2;
         /* On crée un tableau des évaluations des coups à jouer pour chaque situation possible */
         this.decision = new double [Board.NB_HOLES];
         /* Initialisation de l'évaluation courante */
@@ -125,9 +118,8 @@ public abstract class MinMaxNodeModified
                                 this.decision[i] = 3 * this.diffScore(copy) + 7 * earlyGameStrategie(copy) / 10;
                                 //this.decision [i] = this.diffScore (copy);
                             } else if (boardType.equals("MILIEU")) {
-                                //this.decision [i] = this.diffScore (copy)+vulnerableHoleScore(copy.getPlayerHoles(), copy.getOpponentHoles());
                                 this.decision[i] = 3 * this.diffScore(copy) + 7 * earlyGameStrategie(copy) / 10;
-                                // this.decision[i] = 4 * this.diffScore(copy) + 6 * middleGameStrategy(copy) / 10;
+                                // this.decision[i] = 4 * this.diffScore(copy) + 6 * middleGameStrategy(copy) / 10; //Moins performant
                             } else if (boardType.equals("FIN")) {
                                 this.decision[i] = 4 * this.diffScore(copy) + 6 * lateGameStrategie(copy) / 10;
                             }
@@ -153,7 +145,7 @@ public abstract class MinMaxNodeModified
 
 
     private int lateGameStrategie(Board board) {
-        //generate late game strateegy of the awele game
+
         int score = 0;
         if(board.getPlayerSeeds()>board.getOpponentSeeds()){
             score = 10;
