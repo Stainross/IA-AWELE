@@ -26,6 +26,7 @@ public class MaxNodeModified extends MinMaxNodeModified
     MaxNodeModified(Board board, int depth, double alpha, double beta)
     {
         super (board, depth, alpha, beta);
+
     }
 
     /**

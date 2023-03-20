@@ -38,7 +38,7 @@ public final class Main extends OutputWriter
     private static final String LOG_FILE = "awele.log";
     private static final String ANONYMOUS_LOG_FILE = "awele.anonymous.log";
     //private static final int NB_RUNS = 100;
-    private static final int NB_RUNS = 100;
+    private static final int NB_RUNS = 50;
     private static final int MAX_LEARNING_TIME = 1000 * 60 * 70 * 1; // 1 h
     private static final int MAX_DECISION_TIME = 200; // 100 ms
     private static final int MAX_MEMORY = 1024 * 1024 * 64; // 64 MiB
@@ -155,10 +155,11 @@ public final class Main extends OutputWriter
                 {
                     /*code pour enlever des bots*/
                     if(bot.getName().equals("Last")|| bot.getName().equals("First")|| bot.getName().toLowerCase().contains("random")
-                            || bot.getName().equals("IAWELEBetter")
-                            || bot.getName().equals("Awelicopter")
+                            //|| bot.getName().equals("IAWELEBetter")
+                           // || bot.getName().equals("Awelicopter")
                             || bot.getName().toLowerCase().contains("k-nn")
                             || bot.getName().contains("PartiallyGuidedMinmaxBOT")
+                            || bot.getName().equals("MinMax")
                     )
                     {
                         this.print ("Bot \"" + bot.getName () + "\" ignoré");
@@ -228,14 +229,10 @@ public final class Main extends OutputWriter
         // Create a thread pool with the desired number of threads
         ExecutorService executor = Executors.newFixedThreadPool(desiredNumberOfThreads);
 
-
         final double [] points = new double [nbBots];
         int nbGames = (nbBots * (nbBots - 1) / 2);
         int game = 0;
         long start = System.currentTimeMillis ();
-
-
-
 
         for (int i = 0; i < nbBots; i++)
             for (int j = i + 1; j < nbBots; j++)

@@ -11,9 +11,14 @@ public class MinNodeModified extends MinMaxNodeModified
 {
     /**
      * Constructeur pour un noeud initial
+     *
      * @param board La situation de jeu pour laquelle il faut prendre une décision
+     * @param depth
+     * @param alpha
+     * @param beta
+     * @param max
      */
-    MinNodeModified(Board board)
+    MinNodeModified(Board board, int depth, double alpha, double beta, boolean max)
     {
         this (board, 0, -Double.MAX_VALUE, Double.MAX_VALUE);
     }
@@ -28,6 +33,7 @@ public class MinNodeModified extends MinMaxNodeModified
     MinNodeModified(Board board, int depth, double alpha, double beta)
     {
         super (board, depth, alpha, beta);
+
     }
 
     /**

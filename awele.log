@@ -1,4 +1,4 @@
-Mémoire totale : 8,0 GiB
+Mémoire totale : 2,0 GiB
 Instanciation du bot "Random"
 13 classes ont été trouvées
 class awele.bot.demo.random.RandomBot
@@ -11,8 +11,8 @@ class awele.bot.random.RandomBot
 class awele.bot.demo.minmax.MinMaxBot
 class awele.bot.competitor.aweleBOT.PartiallyRandomBOT
 class awele.bot.competitor.aweleBOT.minmaxBetterBot
-class awele.bot.competitor.aweleBOT.Random
 class awele.bot.demo.knn1.Knn1Bot
+class awele.bot.competitor.aweleBOT.Random
 class awele.bot.robin.MinMaxBetter
 
 Bot 1/13
@@ -39,7 +39,18 @@ Bot "k-NN2" ignoré
 Bot 5/13
 Classe : awele.bot.Lucas.Awelicopter
 Instanciation du bot "Awelicopter"
-Bot "Awelicopter" ignoré
+Nom du bot : Awelicopter
+Auteur(s) : Lucas FRANCHINA et Tim BRANSTETT
+Instanciation du bot "Random"
+Instanciation du bot "Awelicopter"
+Instanciation du bot "Awelicopter"
+Instanciation du bot "Awelicopter"
+Instanciation du bot "Awelicopter"
+Temps d'apprentissage : 00:00:15.611
+Durée d'une prise de décision : 00:00:00.072
+Usage mémoire : 21,3 KiB
+Usage mémoire maximum : 75,6 MiB
+
 Bot 6/13
 Classe : awele.bot.demo.first.FirstBot
 Instanciation du bot "First"
@@ -51,13 +62,7 @@ Bot "Random" ignoré
 Bot 8/13
 Classe : awele.bot.demo.minmax.MinMaxBot
 Instanciation du bot "MinMax"
-Nom du bot : MinMax
-Auteur(s) : Alexandre Blansché
-Temps d'apprentissage : 00:00:00.000
-Durée d'une prise de décision : 00:00:00.043
-Usage mémoire : 693,1 KiB
-Usage mémoire maximum : 22,7 MiB
-
+Bot "MinMax" ignoré
 Bot 9/13
 Classe : awele.bot.competitor.aweleBOT.PartiallyRandomBOT
 Instanciation du bot "PartiallyRandomBOT"
@@ -68,42 +73,75 @@ Instanciation du bot "IAWeleBot MinMax"
 Nom du bot : IAWeleBot MinMax
 Auteur(s) : Eliott Lallement et Sofyann Safsaf
 Temps d'apprentissage : 00:00:00.003
-Durée d'une prise de décision : 00:00:00.059
-Usage mémoire : 42,3 KiB
-Usage mémoire maximum : 252,1 MiB
+Durée d'une prise de décision : 00:00:00.127
+Usage mémoire : 40,0 KiB
+Usage mémoire maximum : 57,6 MiB
 
 Bot 11/13
-Classe : awele.bot.competitor.aweleBOT.Random
-Instanciation du bot "AweleBOT- random"
-Bot "AweleBOT- random" ignoré
-Bot 12/13
 Classe : awele.bot.demo.knn1.Knn1Bot
 Instanciation du bot "k-NN1"
 Bot "k-NN1" ignoré
+Bot 12/13
+Classe : awele.bot.competitor.aweleBOT.Random
+Instanciation du bot "AweleBOT- random"
+Bot "AweleBOT- random" ignoré
 Bot 13/13
 Classe : awele.bot.robin.MinMaxBetter
 Instanciation du bot "IAWELEBetter"
-Bot "IAWELEBetter" ignoré
-2 bots ont été instanciés
-Durée du chargement : 00:00:25.000
+Nom du bot : IAWELEBetter
+Auteur(s) : R. LAGLER, T. FELKER
+Instanciation du bot "Random"
+Instanciation du bot "IAWELEBetter - avec heuristique et profondeur 15+2"
+Instanciation du bot "IAWELEBetter - avec heuristique et profondeur 15+2"
+Instanciation du bot "IAWELEBetter - avec heuristique et profondeur 15+2"
+Instanciation du bot "IAWELEBetter - avec heuristique et profondeur 15+2"
+Instanciation du bot "IAWELEBetter - avec heuristique et profondeur 15+2"
+Instanciation du bot "IAWELEBetter - avec heuristique et profondeur 15+2"
+Instanciation du bot "IAWELEBetter - avec heuristique et profondeur 15+2"
+Instanciation du bot "IAWELEBetter - avec heuristique et profondeur 15+2"
+Temps d'apprentissage : 00:00:17.169
+Durée d'une prise de décision : 00:00:00.133
+Usage mémoire : 34,5 KiB
+Usage mémoire maximum : 59,7 MiB
+
+3 bots ont été instanciés
+Durée du chargement : 00:01:14.819
 Mémoire utilisée : 2,2 MiB
 
 Que le championnat commence !
 
-Affrontement 1/1
-MinMax vs. IAWeleBot MinMax
-Score : 0.71 - 2.24
-IAWeleBot MinMax a gagné
-Nombre de coups joués : 131.98 par match
-Durée : 00:00:13.305 par match
-Mémoire utilisée : 2,2 MiB
+Affrontement 1/3
+Awelicopter vs. IAWeleBot MinMax
+Score : 2.78 - 0.2
+Awelicopter a gagné
+Nombre de coups joués : 89.66 par match
+Durée : 00:00:21.519 par match
+Mémoire utilisée : 2,0 MiB
 
-Durée du championnat : 00:05:39.006
+Affrontement 2/3
+Awelicopter vs. IAWELEBetter
+Score : 1.1 - 1.88
+IAWELEBetter a gagné
+Nombre de coups joués : 111.59 par match
+Durée : 00:00:36.570 par match
+Mémoire utilisée : 2,0 MiB
+
+Affrontement 3/3
+IAWeleBot MinMax vs. IAWELEBetter
+Score : 0.24 - 2.76
+IAWELEBetter a gagné
+Nombre de coups joués : 87.51 par match
+Durée : 00:00:22.739 par match
+Mémoire utilisée : 1,9 MiB
+
+Durée du championnat : 00:34:15.077
 
 Scores finaux :
-MinMax : 0.71
-IAWeleBot MinMax : 2.24
+Awelicopter : 3.88
+IAWeleBot MinMax : 0.44
+IAWELEBetter : 4.64
 
 Rangs :
-1. IAWeleBot MinMax : 2.24
-2. MinMax : 0.71
+1. IAWELEBetter : 4.64
+2. Awelicopter : 3.88
+3. IAWeleBot MinMax : 0.44

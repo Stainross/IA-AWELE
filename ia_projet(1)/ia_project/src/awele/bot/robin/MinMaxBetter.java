@@ -1,5 +1,5 @@
-package awele.bot.robin;
 
+package awele.bot.robin;
 import awele.bot.CompetitorBot;
 import awele.bot.demo.random.RandomBot;
 import awele.core.Awele;
@@ -48,6 +48,20 @@ public class MinMaxBetter extends CompetitorBot {
 
     }
 
+    private static int[] pos1 = new int[]{5,4,4,4,4,4};
+    private static int[] pos2 = new int[]{5,5,4,4,4,4};
+
+    private static int[] pos3 = new int[]{5,5,5,4,4,4};
+
+    private static int[] pos4 = new int[]{5,5,5,5,4,4};
+
+
+
+
+
+    private int nbCoup =0;
+
+
     /**
      * la fonction de d�cision, calcule la profondeur a utiliser pour calculer l'efficacit� des coups comme suit :
      * Pour chaque coup valide, prend la valeur du tableau de profondeur calcul� pendant learn et lui ajoute 1 tous les 2 coups invalides
@@ -64,27 +78,37 @@ public class MinMaxBetter extends CompetitorBot {
         boolean[] validMoves = board.validMoves(curp);
         double[] decisionBis = new double[6];
         int unvalid = 0;
+        myNumber = board.getCurrentPlayer();
         if (board.getNbSeeds() == 48) {
-            if (Arrays.equals(board.getPlayerHoles(), new int[]{4, 4, 4, 4, 4, 4})) {
+            nbCoup = 0;
+            if (Arrays.equals(board.getPlayerHoles(), new int[]{4, 4, 4, 4, 4, 4}) ||
+                    Arrays.equals(board.getPlayerHoles(), pos1) ||
+                    Arrays.equals(board.getPlayerHoles(), pos2) ||
+                    Arrays.equals(board.getPlayerHoles(), pos3)||
+                    Arrays.equals(board.getPlayerHoles(), pos4)
+            ) {
                 return new double[]{0, 0, 0, 0, 0, 10};
             }
+        }else{
+            nbCoup++;
         }
         for (int j = 0; j < 6; j++) {
             if (!validMoves[j])
                 unvalid += 1;
         }
         int maprof = depth[curseed] + unvalid / 2;
-
         for (int i = 0; i < 6; i++) {
             if (validMoves[i]) {
                 decisionBis[i] = i + 1;
                 try {
-                    decision[i] = miniMax(-100, 100, maprof, board.playMoveSimulationBoard(curp, decisionBis), false);
+                    Board b = board.playMoveSimulationBoard(curp, decisionBis);
+                    decision[i] = miniMax(-100, 100, maprof, b, false);
 
                 } catch (InvalidBotException e) {
                 }
             }
         }
+
 
 
         return decision;
@@ -130,6 +154,8 @@ public class MinMaxBetter extends CompetitorBot {
      */
     public static final int MOBILITY_WEIGHT = -54;
 
+    public int myNumber;
+
 
     /**
      * @param board le plateau de jeu courant
@@ -146,7 +172,7 @@ public class MinMaxBetter extends CompetitorBot {
         for (int i = 0; i <= 5; i++) {
             final int seedOpp = oppHoles[i];
             final int seedPlayer = playerHoles[i];
-            if (seedPlayer > (12 - i)) {
+            if (seedPlayer > (12 )) {
                 score += ATTACK_WEIGHT;
             } else if (seedPlayer == 0) {
                 score += MOBILITY_WEIGHT;
@@ -155,13 +181,22 @@ public class MinMaxBetter extends CompetitorBot {
             }
 
 
-            if (seedOpp > (12 - i)) {
+            if (seedOpp > (12 )) {
                 score -= ATTACK_WEIGHT;
             } else if (seedOpp == 0) {
                 score -= MOBILITY_WEIGHT;
             } else if (seedOpp < 3) {
                 score -= DEFENSE_WEIGHT;
             }
+        }
+
+        // Ajout de la condition de moins de 6 graines
+        if (board.getNbSeeds() < 6) {
+            score += 50 * (board.getScore(board.getCurrentPlayer()) - board.getScore(1-board.getCurrentPlayer()));
+        }
+
+        if (isOnlyInvalidMoves(board.validMoves(1 - board.getCurrentPlayer()))) {
+            score += -100;
         }
 
 
@@ -228,16 +263,6 @@ public class MinMaxBetter extends CompetitorBot {
     }
 
 
-    public int[] getBoardHash(Board b){
-        int[] hash = new int[14];
-        for(int i = 0; i<6; i++){
-            hash[i] = b.getPlayerHoles()[i];
-            hash[i+7] = b.getOpponentHoles()[i];
-        }
-        hash[6] = b.getScore(0);
-        hash[13] = b.getScore(1);
-        return hash;
-    }
     /**
      *
      * la fonction d'apprentissage permettant d'initialiser les variables et �galement de les ajuster pendant les tests
@@ -276,7 +301,7 @@ public class MinMaxBetter extends CompetitorBot {
                 Awele awele = new Awele(b, random);
                 awele.play();
                 long decisionTime = (long) ((2 * awele.getRunningTime()) / awele.getNbMoves()) - randomAverageDecisionTime;
-                if (decisionTime > 0.80 * 200) {
+                if (decisionTime > 0.60 * 200) {
                     goodDepth = this.maDepth + i - 1;
                     System.out.println("C'est bon : " + decisionTime + " ; " + goodDepth);
 
@@ -299,6 +324,5 @@ public class MinMaxBetter extends CompetitorBot {
         }
 
     }
-
 
 }
