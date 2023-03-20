@@ -2,6 +2,7 @@ package awele.bot.competitor.aweleBOT;
 
 
 import awele.bot.Lucas.Awelicopter;
+import awele.bot.demo.minmax.MinMaxBot;
 import awele.core.Board;
 import awele.core.InvalidBotException;
 import awele.data.AweleData;
@@ -13,6 +14,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Optional;
 
+
 /**
  * @author Alexandre Blansché
  * Noeud d'un arbre MinMax
@@ -20,6 +22,7 @@ import java.util.Optional;
 public abstract class MinMaxNodeModified
 {
     private static  ArrayList<AweleObservation> aweleObservations;
+
     /** Numéro de joueur de l'IA */
     private static int player;
 
@@ -49,27 +52,22 @@ public abstract class MinMaxNodeModified
      */
     public  MinMaxNodeModified(Board board, int depth, double alpha, double beta)
     {
-        /*
-        if(board.getNbSeeds()<38 && board.getNbSeeds()>18){
-           maxDepth = minmaxBetterBot.MAX_DEPTH+2;
-        }
-       else if(board.getNbSeeds()<18){
-            maxDepth = minmaxBetterBot.MAX_DEPTH+4;
-        }*/
-        //if(board.getNbSeeds()<12)maxDepth = minmaxBetterBot.MAX_DEPTH+2;
 
-
+        // Si le bot est disqualifié à cause du temps de décision trop long commenté la ligne en dessous
+        if(board.getNbSeeds()<12) maxDepth = minmaxBetterBot.MAX_DEPTH+2;
         /* On crée un tableau des évaluations des coups à jouer pour chaque situation possible */
         this.decision = new double [Board.NB_HOLES];
         /* Initialisation de l'évaluation courante */
         this.evaluation = this.worst ();
+
+        /*
         Optional<AweleObservation> knownObservation = aweleObservations.stream().filter(obs -> Arrays.equals(obs.getPlayerHoles(), board.getPlayerHoles()) && Arrays.equals(obs.getOppenentHoles(), board.getOpponentHoles())).findFirst();
         int MoveKnown=-1;
         AweleObservation observation = null;
         if (knownObservation.isPresent()) {
-             observation = knownObservation.get();
+            observation = knownObservation.get();
             MoveKnown = observation.getMove();
-        }
+        }*/
         /* On parcourt toutes les coups possibles */
         for (int i = 0; i < Board.NB_HOLES; i++) {
             /* Si le coup est jouable */
@@ -77,29 +75,29 @@ public abstract class MinMaxNodeModified
                 /* Sélection du coup à jouer */
                 double[] decision = new double[Board.NB_HOLES];
                 decision[i] = 1;
-
-                if(MoveKnown==i ) {
+                /*
+                if (MoveKnown == i) {//le
                     if (observation.isWon()) {
                         if (observation.getPlayerHoles() == board.getPlayerHoles()) {
-                                this.decision[i] += 100;
-                                break;//it's  a good move so we don't need to check for further move
+                            this.decision[i] += 100;
+                            break;//it's  a good move so we don't need to check for further move
                         } else {
 
-                                this.decision[i] -= 100;
-                                continue;//it's a bad move so we shouldn't play it and we need to check for further move
+                            this.decision[i] -= 100;
+                            continue;//it's a bad move so we shouldn't play it and we need to check for further move
                         }
                     } else {
                         if (observation.getPlayerHoles() == board.getPlayerHoles()) {
-                                this.decision[i] -= 100;
-                                continue;//it's a bad move so we shouldn't play it and we need to check for further move
+                            this.decision[i] -= 100;
+                            continue;//it's a bad move so we shouldn't play it and we need to check for further move
 
                         } else {
-                                this.decision[i] += 100;
-                                break;//it's  a good move so we don't need to check for further move
+                            this.decision[i] += 100;
+                            break;//it's  a good move so we don't need to check for further move
 
                         }
                     }
-                }
+                }*/
                 /* On copie la grille de jeu et on joue le coup sur la copie */
                 Board copy = (Board) board.clone();
                 try {
@@ -134,31 +132,9 @@ public abstract class MinMaxNodeModified
                                 this.decision[i] = 4 * this.diffScore(copy) + 6 * lateGameStrategie(copy) / 10;
                             }
 
-
-
-                            // Check if the current state exists in the list of known AweleObservations
-
-                           // Optional<AweleObservation> knownObservation = aweleObservations.stream().filter(obs -> Arrays.equals(obs.getPlayerHoles(), board.getPlayerHoles()) && Arrays.equals(obs.getOppenentHoles(), board.getOpponentHoles())).findFirst();
-                            /*
-                            if (knownObservation.isPresent()) {
-                                AweleObservation observation = knownObservation.get();
-                                if (observation.getMove() == i)
-                                    if (observation.isWon()) {
-                                        if (observation.getPlayerHoles() == board.getPlayerHoles()) {
-                                            this.decision[i] += 100;
-                                        } else {
-                                            this.decision[i] -= 100;
-                                        }
-                                    } else {
-                                        if (observation.getPlayerHoles() == board.getPlayerHoles()) {
-                                            this.decision[i] -= 100;
-                                        } else {
-                                            this.decision[i] += 100;
-                                        }
-                                    }
-                            }*/
                         }
                     }
+
                     /* L'évaluation courante du noeud est mise à jour, selon le type de noeud (MinNode ou MaxNode) */
                     this.evaluation = this.minmax(this.decision[i], this.evaluation);
                     /* Coupe alpha-beta */
@@ -172,7 +148,7 @@ public abstract class MinMaxNodeModified
                     this.decision[i] = 0;
                 }
             }
-        }
+        }//end for loop for all possible moves
     }
 
 
@@ -190,6 +166,8 @@ public abstract class MinMaxNodeModified
         return score;
     }
 
+
+    //generate middle game strategy of the awele game but is not used in the final version as it is not efficient
     private double middleGameStrategy(Board board) {
         int[] opponentHoles = board.getOpponentHoles();
         int[] playerHoles = board.getPlayerHoles();
@@ -223,7 +201,7 @@ public abstract class MinMaxNodeModified
         return score;
     }
 
-
+    //previous middle game strategy
     private int middleGameStrategieSave(Board copy) {
         int[] opponentHoles = copy.getOpponentHoles();
         int[] playerHoles = copy.getPlayerHoles();
@@ -319,6 +297,7 @@ public abstract class MinMaxNodeModified
         aweleObservations = aweleObs;
         MinMaxNodeModified.maxDepth = maxDepth;
         MinMaxNodeModified.player = board.getCurrentPlayer ();
+
     }
 
     private int diffScore (Board board)
