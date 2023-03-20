@@ -49,7 +49,7 @@ public class minmaxIAwaligator extends CompetitorBot {
         learnWithDynamicDepth();//Si le bot dépasse le temps moyen de decisions malgrès cette fonction
         //il faut commenter la ligne ci-dessus et décommenter la ligne ci-dessous
         //this.MAX_DEPTH = 8;
-        //ou
+        //ou si ne marche pas encore
         //this.MAX_DEPTH = 6; //pas de valeur impaire
     }
 
@@ -115,7 +115,7 @@ public class minmaxIAwaligator extends CompetitorBot {
                         maxDecisionTime = decisionTime;
                     if (decisionTime<minDecisionTime)
                         minDecisionTime = decisionTime;
-                    if(decisionTime>400)
+                    if(decisionTime>220)
                     {
                         System.out.println("averageDecisionTime beaucoup trop long sur une run: "+averageDecisionTime);
                         break;
@@ -126,7 +126,7 @@ public class minmaxIAwaligator extends CompetitorBot {
                 System.out.println("maxDecisionTime : "+maxDecisionTime);
                 System.out.println("averageDecisionTime : "+averageDecisionTime);
                 System.out.println("minDecisionTime : "+minDecisionTime);
-                if(averageDecisionTime>160||maxDecisionTime>220){
+                if(averageDecisionTime>180||maxDecisionTime>220){
                     this.MAX_DEPTH = MAX_DEPTH-2;
                     System.out.println("averageDecisionTime trop long: "+averageDecisionTime);
                     break;

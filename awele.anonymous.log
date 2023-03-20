@@ -33,9 +33,9 @@ Classe : awele.bot.demo.minmax.MinMaxBot
 Instanciation du bot "MinMax"
 Nom du bot : MinMax
 Temps d'apprentissage : 00:00:00.000
-Durée d'une prise de décision : 00:00:00.040
-Usage mémoire : 694,2 KiB
-Usage mémoire maximum : 190,7 MiB
+Durée d'une prise de décision : 00:00:00.061
+Usage mémoire : 694,0 KiB
+Usage mémoire maximum : 110,8 MiB
 
 Bot 6/10
 Classe : awele.bot.demo.knn2.Knn2Bot
@@ -46,3 +46,116 @@ Classe : awele.bot.competitor.IAweligator.minmaxIAwaligator
 Instanciation du bot "IAwaligator"
 Nom du bot : IAwaligator
 Instanciation du bot "Random"
+Temps d'apprentissage : 00:04:59.473
+Durée d'une prise de décision : 00:00:00.085
+Usage mémoire : 70,1 KiB
+Usage mémoire maximum : 106,4 MiB
+
+Bot 8/10
+Classe : awele.bot.demo.knn1.Knn1Bot
+Instanciation du bot "k-NN1"
+Bot "k-NN1" ignoré
+Bot 9/10
+Classe : awele.bot.Lucas.Awelicopter
+Instanciation du bot "Awelicopter"
+Nom du bot : Awelicopter
+Instanciation du bot "Random"
+Instanciation du bot "Awelicopter"
+Instanciation du bot "Awelicopter"
+Instanciation du bot "Awelicopter"
+Instanciation du bot "Awelicopter"
+Temps d'apprentissage : 00:00:14.180
+Durée d'une prise de décision : 00:00:00.114
+Usage mémoire : 21,7 KiB
+Usage mémoire maximum : 40,1 MiB
+
+Bot 10/10
+Classe : awele.bot.robin.MinMaxBetter
+Instanciation du bot "IAWELEBetter"
+Nom du bot : IAWELEBetter
+Instanciation du bot "Random"
+Instanciation du bot "IAWELEBetter - avec heuristique et profondeur 15+2"
+Instanciation du bot "IAWELEBetter - avec heuristique et profondeur 15+2"
+Instanciation du bot "IAWELEBetter - avec heuristique et profondeur 15+2"
+Instanciation du bot "IAWELEBetter - avec heuristique et profondeur 15+2"
+Instanciation du bot "IAWELEBetter - avec heuristique et profondeur 15+2"
+Instanciation du bot "IAWELEBetter - avec heuristique et profondeur 15+2"
+Instanciation du bot "IAWELEBetter - avec heuristique et profondeur 15+2"
+Temps d'apprentissage : 00:00:11.713
+Durée d'une prise de décision : 00:00:00.019
+Usage mémoire : 17,3 KiB
+Usage mémoire maximum : 8,1 MiB
+
+4 bots ont été instanciés
+Durée du chargement : 00:05:59.922
+Mémoire utilisée : 2,6 MiB
+
+Que le championnat commence !
+
+Affrontement 1/6
+MinMax vs. IAwaligator
+Score : 0.0 - 3.0
+IAwaligator a gagné
+Nombre de coups joués : 154.475 par match
+Durée : 00:00:14.913 par match
+Mémoire utilisée : 2,2 MiB
+Nombre de runs : 20
+
+Affrontement 2/6
+MinMax vs. Awelicopter
+Score : 0.0 - 3.0
+Awelicopter a gagné
+Nombre de coups joués : 70.45 par match
+Durée : 00:00:14.449 par match
+Mémoire utilisée : 2,2 MiB
+Nombre de runs : 20
+
+Affrontement 3/6
+MinMax vs. IAWELEBetter
+Score : 0.15 - 2.85
+IAWELEBetter a gagné
+Nombre de coups joués : 92.175 par match
+Durée : 00:00:07.888 par match
+Mémoire utilisée : 2,2 MiB
+Nombre de runs : 20
+
+Affrontement 4/6
+IAwaligator vs. Awelicopter
+Score : 1.25 - 1.7
+Awelicopter a gagné
+Nombre de coups joués : 111.825 par match
+Durée : 00:00:27.483 par match
+Mémoire utilisée : 2,2 MiB
+Nombre de runs : 20
+
+Affrontement 5/6
+IAwaligator vs. IAWELEBetter
+Score : 1.4 - 1.55
+IAWELEBetter a gagné
+Nombre de coups joués : 132.225 par match
+Durée : 00:00:15.795 par match
+Mémoire utilisée : 2,2 MiB
+Nombre de runs : 20
+
+Affrontement 6/6
+Awelicopter vs. IAWELEBetter
+Score : 1.95 - 1.05
+Awelicopter a gagné
+Nombre de coups joués : 96.975 par match
+Durée : 00:00:21.554 par match
+Mémoire utilisée : 2,2 MiB
+Nombre de runs : 20
+
+Durée du championnat : 00:10:28.893
+
+Scores finaux :
+MinMax : 0.15
+IAwaligator : 5.65
+Awelicopter : 6.65
+IAWELEBetter : 5.45
+
+Rangs :
+1. Awelicopter : 6.65
+2. IAwaligator : 5.65
+3. IAWELEBetter : 5.45
+4. MinMax : 0.15
