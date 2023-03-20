@@ -141,7 +141,7 @@ public final class MainSaved extends OutputWriter
                 {
                     /*code pour enlever des bots*/
                     if(bot.getName().equals("Last")|| bot.getName().equals("First")|| bot.getName().toLowerCase().contains("random")
-                            || bot.getName().equals("IAWELEBetter")
+                           // || bot.getName().equals("IAWELEBetter")
                             || bot.getName().equals("Awelicopter")
                             || bot.getName().toLowerCase().contains("k-nn")
                             || bot.getName().contains("PartiallyGuidedMinmaxBOT")

@@ -33,7 +33,13 @@ public abstract class MinMaxNodeModified
     private double [] decision;
 
 
-
+    public int nbCoup(int[] holes){
+        int res = 0;
+        for(int i=0;i<holes.length;i++){
+            if(holes[i]==0) res++;
+        }
+        return res;
+    }
     /**
      * Constructeur...
      * @param board L'état de la grille de jeu
@@ -43,12 +49,14 @@ public abstract class MinMaxNodeModified
      */
     public  MinMaxNodeModified(Board board, int depth, double alpha, double beta)
     {
+        /*
         if(board.getNbSeeds()<38 && board.getNbSeeds()>18){
-            maxDepth = minmaxBetterBot.MAX_DEPTH+2;
+           maxDepth = minmaxBetterBot.MAX_DEPTH+2;
         }
        else if(board.getNbSeeds()<18){
             maxDepth = minmaxBetterBot.MAX_DEPTH+4;
-        }
+        }*/
+        //if(board.getNbSeeds()<12)maxDepth = minmaxBetterBot.MAX_DEPTH+2;
 
 
         /* On crée un tableau des évaluations des coups à jouer pour chaque situation possible */
